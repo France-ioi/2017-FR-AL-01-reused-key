@@ -5,7 +5,7 @@ import EpicComponent from 'epic-component';
 import {include, defineAction, addReducer} from 'epic-linker';
 import WorkspaceBuilder from 'alkindi-task-lib/simple_workspace';
 
-import {decrypt, generateKeyWithWord, preventDefault} from './utils';
+import {decrypt, generateKeyWithWord, preventDefault, ALPHABET_SIZE} from './utils';
 
 export default function* (deps) {
 
@@ -190,9 +190,6 @@ export default function* (deps) {
   /*
     Add reducers for workspace actions and any needed sagas below:
   */
-
-  const ALPHABET_SIZE = 26;
-  const ALPHABET_START = 'A'.charCodeAt(0);
 
   // Change key by clicking increase/decrease.
   yield addReducer('keyChange', function (state, action) {

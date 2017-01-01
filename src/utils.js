@@ -1,4 +1,7 @@
 
+export const ALPHABET_SIZE = 26;
+export const ALPHABET_START = 'A'.charCodeAt(0);
+
 // Auxiliary function to decrypt a cipher string given a key.
 export function decrypt(cipher, key) {
   var result = "";
