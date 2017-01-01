@@ -14,35 +14,35 @@ export default function* (deps) {
   /* Simple workspace interface: init, dump, load, update, View */
 
   const init = function (task) {
-    const {ciphers, plainWord} = task;
-    const wordCipherIndex = null;
-    const wordCharIndex = 0;
-    var key = [];
-    for(var index = 0; index < ciphers[0].length; index++) {
+    const {ciphers} = task;
+    const key = [];
+    for (let index = 0; index < ciphers[0].length; index++) {
       key.push({
         value: 0
       });
     }
-    var keyWithWord = key.slice(0);
-    return {key, keyWithWord, wordCharIndex, wordCipherIndex, plainWord, ciphers};
+    const keyWithWord = key.slice(0);
+    return {key, keyWithWord, wordCharIndex: 0, wordCipherIndex: null};
   };
 
   const dump = function (workspace) {
-    // TODO what's the desired behavior?
-    const {key, keyWithWord, wordCharIndex, wordCipherIndex, plainWord, ciphers} = workspace;
-    return {key, keyWithWord, wordCharIndex, wordCipherIndex, plainWord, ciphers};
+    // Extract the smallest part of the workspace that is needed to rebuild it.
+    const {key, wordCharIndex, wordCipherIndex} = workspace;
+    return {key, wordCharIndex, wordCipherIndex};
   };
 
   const load = function (dump) {
-    // TODO what's the desired behavior?
-    const {key, keyWithWord, wordCharIndex, wordCipherIndex, plainWord, ciphers} = dump;
-    return {key, keyWithWord, wordCharIndex, wordCipherIndex, plainWord, ciphers};
+    // Use a saved dump to rebuild a workspace.  Any computation that depends
+    // on the task is done in update.
+    const {key, wordCharIndex, wordCipherIndex} = dump;
+    return {key, wordCharIndex, wordCipherIndex};
   };
 
   const update = function (task, workspace) {
-    // TODO what's the desired behavior?
-    const {key, keyWithWord, wordCharIndex, wordCipherIndex, plainWord, ciphers} = workspace;
-    return {key, keyWithWord, wordCharIndex, wordCipherIndex, plainWord, ciphers};
+    const {plainWord, ciphers} = task;
+    const {key, wordCharIndex, wordCipherIndex} = workspace;
+    const keyWithWord = generateKeyWithWord(key, plainWord, wordCharIndex, ciphers[wordCipherIndex]);
+    return {...workspace, keyWithWord};
   };
 
   const View = EpicComponent(self => {
@@ -250,7 +250,8 @@ export default function* (deps) {
     let {workspace} = state;
     const wordCharIndex = charIndex;
     const wordCipherIndex = cipherIndex;
-    let {key, keyWithWord, plainWord, ciphers} = workspace;
+    let {key, keyWithWord} = workspace;
+    const {plainWord, ciphers} = state.task;
     keyWithWord = generateKeyWithWord(key, plainWord, wordCharIndex, ciphers[cipherIndex]);
     workspace = {...workspace, wordCharIndex, wordCipherIndex, keyWithWord};
     return {...state, workspace};
