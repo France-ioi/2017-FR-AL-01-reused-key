@@ -52,7 +52,9 @@ export default function* (deps) {
     self.state = {dragging: false};
 
     const onKeyChange = function (index, direction) {
-      self.props.dispatch({type: deps.keyChange, index, direction});
+      const {key} = self.props.workspace;
+      const value = (key[index].value + parseInt(direction) + ALPHABET_SIZE) % ALPHABET_SIZE;
+      self.props.dispatch({type: deps.keyChange, index, value});
     };
 
     const onMouseDown = function (cipherIndex, charIndex) {
@@ -124,25 +126,27 @@ export default function* (deps) {
     Add reducers for workspace actions and any needed sagas below:
   */
 
-  // Change key by clicking increase/decrease.
+  // Change the key value at the given index.
   yield addReducer('keyChange', function (state, action) {
-    let {index, direction} = action;
+    const {index, value} = action;
     let {workspace} = state;
+    const {plainWord, wordCharIndex} = workspace;
+    let {key, keyWithWord} = workspace;
 
-    // TODO is this cloning needed? Task seems to work without it, not sure why.
-    let key = workspace.key.slice(0);
-    let keyWithWord = workspace.keyWithWord.slice(0);
-
-    const newValue = (key[index].value + parseInt(direction) + ALPHABET_SIZE) % ALPHABET_SIZE;
+    // Update the key non-destructively.
+    key = workspace.key.slice();
     key[index] = {
-      value: newValue
+      value: value
     };
-    /* TODO should we check if this index is inside the decrypted word part?
-     * (The user should not be able to click such a button, because it's hidden).
-     */
-    keyWithWord[index] = {
-      value: newValue
-    };
+
+    // Update keyWithWord unless the plain word hides the change.
+    if (index < wordCharIndex || index >= wordCharIndex + plainWord.length) {
+      keyWithWord = workspace.keyWithWord.slice();
+      keyWithWord[index] = {
+        value: value
+      };
+    }
+
     workspace = {...workspace, key, keyWithWord};
     return {...state, workspace};
   });
