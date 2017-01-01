@@ -45,6 +45,22 @@ export default function* (deps) {
     return {...workspace, keyWithWord};
   };
 
+  // A button for increasing/decreasing one key number.
+  // props: index, direction, onChange
+  const KeyButton = EpicComponent(self =>
+    const onClick = function () {
+      self.props.onChange(self.props.index, self.props.direction);
+    };
+    self.render = function () {
+      const {index, direction} = props;
+      var text = "^";
+      if(direction == "-1") {
+        text = "v";
+      }
+      return <Button onClick={onClick}>{text}</Button>;
+    };
+  });
+
   const View = EpicComponent(self => {
 
     self.state = {dragging: false};
@@ -69,16 +85,6 @@ export default function* (deps) {
     };
 
     // TODO should these components be defined here? Do they need to be consts?
-
-    // A button for increasing/decreasing one key number.
-    function KeyButton(props) {
-      const {index, direction} = props;
-      var text = "^";
-      if(direction == "-1") {
-        text = "v";
-      }
-      return <Button onClick={() => onKeyChange(index, direction)}>{text}</Button>;
-    }
 
     // A cell containig on encrypted character. Sensitive to mouse movement during drag.
     function CipherChar(props) {
@@ -159,7 +165,7 @@ export default function* (deps) {
                 if(wordCipherIndex !== null && keyIndex >= wordStartIndex && keyIndex < wordStartIndex + plainWord.length) {
                   return <td key={keyIndex}></td>;
                 }
-                return <td key={keyIndex}><KeyButton index={keyIndex} direction="1" /></td>;
+                return <td key={keyIndex}><KeyButton index={keyIndex} direction="1" onChange={onKeyChange} /></td>;
               })}
             </tr>
             <tr>
@@ -172,7 +178,7 @@ export default function* (deps) {
                 if(wordCipherIndex !== null && keyIndex >= wordStartIndex && keyIndex < wordStartIndex + plainWord.length) {
                   return <td key={keyIndex}></td>;
                 }
-                return <td key={keyIndex}><KeyButton index={keyIndex} direction="-1" /></td>;
+                return <td key={keyIndex}><KeyButton index={keyIndex} direction="-1" onChange={onKeyChange} /></td>;
               })}
             </tr>
           </table>
