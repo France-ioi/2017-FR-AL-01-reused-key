@@ -82,14 +82,11 @@ export default function* (deps) {
   // Update the key so that the plain word appears at a specific position in
   // the deciphered text.
   yield addReducer('setPlainWordPosition', function (state, action) {
-    let {cipherIndex, charIndex} = action;
+    const {cipherIndex, charIndex} = action;
     let {workspace} = state;
-    const wordCharIndex = charIndex;
-    const wordCipherIndex = cipherIndex;
-    let {key, keyWithWord} = workspace;
     const {plainWord, ciphers} = state.task;
-    keyWithWord = generateKeyWithWord(key, plainWord, wordCharIndex, ciphers[cipherIndex]);
-    workspace = {...workspace, wordCharIndex, wordCipherIndex, keyWithWord};
+    const keyWithWord = generateKeyWithWord(workspace.key, plainWord, charIndex, ciphers[cipherIndex]);
+    workspace = {...workspace, wordCharIndex: charIndex, wordCipherIndex: cipherIndex, keyWithWord};
     return {...state, workspace};
   });
 };
