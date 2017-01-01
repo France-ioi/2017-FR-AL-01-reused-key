@@ -37,7 +37,3 @@ export function generateKeyWithWord(key, plainWord, wordCharIndex, cipher) {
   }
   return keyWithWord;
 }
-
-export const preventDefault = function (event) {
-  event.preventDefault();
-};
