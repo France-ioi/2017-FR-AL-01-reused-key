@@ -1,8 +1,11 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
+import {DragSource, DropTarget} from 'react-dnd';
 import EpicComponent from 'epic-component';
 import {include, defineAction, addReducer} from 'epic-linker';
 import WorkspaceBuilder from 'alkindi-task-lib/simple_workspace';
+
+import {decrypt, generateKeyWithWord, preventDefault} from './utils';
 
 export default function* (deps) {
 
@@ -110,22 +113,6 @@ export default function* (deps) {
       );
     }
 
-    // Auxiliary function to decrypt a cipher string given a key.
-    function decrypt(cipher, key) {
-      var result = "";
-      for(var index = 0; index < cipher.length; index++) {
-        var letter;
-        if(cipher[index] === ' ') {
-          letter = ' ';
-        }
-        else {
-          letter = ((cipher.charCodeAt(index) - ALPHABET_START + key[index].value) % ALPHABET_SIZE) + ALPHABET_START;
-        }
-        result += String.fromCharCode(letter);
-      }
-      return result;
-    }
-
     // A displayed decryption (table of plain character cells).
     function Plain(props) {
       const {cipherValue, wordCharIndex, wordCipherIndex, keyWithWord, cipherIndex, plainWord} = props;
@@ -149,10 +136,6 @@ export default function* (deps) {
         </table>
       );
     }
-
-    const preventDefault = function (event) {
-      event.preventDefault();
-    };
 
     self.render = function () {
       const {score, task, workspace, dispatch} = self.props;
@@ -233,26 +216,6 @@ export default function* (deps) {
     workspace = {...workspace, key, keyWithWord};
     return {...state, workspace};
   });
-
-  // Generate a keyWithWord from a key (keyWithWord takes the decrypted word into account).
-  function generateKeyWithWord(key, plainWord, wordCharIndex, cipher) {
-    var keyWithWord = key.slice(0);
-    const wordStartIndex = Math.max(0, Math.min(wordCharIndex, key.length - plainWord.length));
-    for(var index = wordStartIndex; index < wordStartIndex + plainWord.length; index++) {
-      if(cipher[index] === ' ') {
-        // TODO is this the desired behavior?
-        keyWithWord[index] = {
-          value: 0
-        };
-      }
-      else {
-        keyWithWord[index] = {
-          value: (plainWord.charCodeAt(index - wordStartIndex) - cipher.charCodeAt(index) + ALPHABET_SIZE) % ALPHABET_SIZE
-        };
-      }
-    }
-    return keyWithWord;
-  }
 
   // Dragging: handle mouse movement.
   yield addReducer('setPlainWordPosition', function (state, action) {
