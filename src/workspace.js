@@ -150,6 +150,10 @@ export default function* (deps) {
       );
     }
 
+    const preventDefault = function (event) {
+      event.preventDefault();
+    };
+
     self.render = function () {
       const {score, task, workspace, dispatch} = self.props;
       const {key, keyWithWord, wordCharIndex, wordCipherIndex} = workspace;
@@ -158,7 +162,7 @@ export default function* (deps) {
       return (
         /* TODO how to cach mouse up in entire document? */
         /* preventDefault is called because browsers default to a visual dragging of HTML elements */
-        <div onMouseUp={() => onMouseUp()} onMouseMove={(event) => event.preventDefault()}>
+        <div onMouseUp={onMouseUp} onMouseMove={preventDefault}>
           <table className="keyTable">
             <tr>
               {key.map(function(keyValue, keyIndex) {
