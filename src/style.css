@@ -1,0 +1,31 @@
+table {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+.keyTable td, .cipherTable td, .plainTable td {
+    width: 34px;
+    min-width: 34px;
+    max-width: 34px;
+    text-align: center;
+}
+.keyTable {
+    margin-bottom: 40px;
+}
+.ciphersAndPlains {
+    font-family: Courier New, Courier, monospace;
+    font-size: 30px;
+}
+
+.cipherTable {
+    margin-top: 20px;
+}
+
+.plainTable {
+    background: lightgray;
+}
+
+.plainChar {
+    background-color: yellow;
+}

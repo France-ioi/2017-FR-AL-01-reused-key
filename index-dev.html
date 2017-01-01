@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<div id="task">
+  <div id="container" class="container"></div>
+</div>
+<script src="jspm_packages/system.js"></script>
+<script src="jspm.config.js"></script>
+<script src="dist/dev-bundle.js"></script>
+<script type="text/javascript">
+  System.import('2017-fr-al-01-reused-key').then(function (main) {
+    // TODO choose ciphers and plain word.
+    var ciphers = [
+      "TWPQJX NJVW JWCJVJ MKNFLF",
+      "PPH YCV CRCQR IMVFMS BLSQ",
+      "B E H K N Q T W Z C F I L"
+    ];
+    var plainWord = "ONE";
+    // TODO choose key and use it.
+    var secretKey = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
+  
+    // TODO hints.
+    var task = {ciphers, plainWord, hints: {}};
+    main.run({
+      container: document.getElementById('container'),
+      score: 100,
+      task: task,
+      view: 'workspace'
+    });
+  });
+</script>
