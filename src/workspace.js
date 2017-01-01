@@ -9,9 +9,7 @@ export default function* (deps) {
   /* Actions dispatched by the workspace */
 
   yield defineAction('keyChange', 'Workspace.KeyChange');
-  yield defineAction('mouseDown', 'Workspace.MouseDown');
-  yield defineAction('mouseMove', 'Workspace.MouseMove');
-  yield defineAction('mouseUp', 'Workspace.MouseUp');
+  yield defineAction('setPlainWordPosition', 'Workspace.SetPlainWordPosition');
 
   /* Simple workspace interface: init, dump, load, update, View */
 
@@ -19,7 +17,6 @@ export default function* (deps) {
     const {ciphers, plainWord} = task;
     const wordCipherIndex = null;
     const wordCharIndex = 0;
-    const dragging = false;
     var key = [];
     for(var index = 0; index < ciphers[0].length; index++) {
       key.push({
@@ -27,44 +24,49 @@ export default function* (deps) {
       });
     }
     var keyWithWord = key.slice(0);
-    return {key, keyWithWord, wordCharIndex, wordCipherIndex, dragging, plainWord, ciphers};
+    return {key, keyWithWord, wordCharIndex, wordCipherIndex, plainWord, ciphers};
   };
 
   const dump = function (workspace) {
     // TODO what's the desired behavior?
-    const {key, keyWithWord, wordCharIndex, wordCipherIndex, dragging, plainWord, ciphers} = workspace;
-    return {key, keyWithWord, wordCharIndex, wordCipherIndex, dragging, plainWord, ciphers};
+    const {key, keyWithWord, wordCharIndex, wordCipherIndex, plainWord, ciphers} = workspace;
+    return {key, keyWithWord, wordCharIndex, wordCipherIndex, plainWord, ciphers};
   };
 
   const load = function (dump) {
     // TODO what's the desired behavior?
-    const {key, keyWithWord, wordCharIndex, wordCipherIndex, dragging, plainWord, ciphers} = dump;
-    return {key, keyWithWord, wordCharIndex, wordCipherIndex, dragging, plainWord, ciphers};
+    const {key, keyWithWord, wordCharIndex, wordCipherIndex, plainWord, ciphers} = dump;
+    return {key, keyWithWord, wordCharIndex, wordCipherIndex, plainWord, ciphers};
   };
 
   const update = function (task, workspace) {
     // TODO what's the desired behavior?
-    const {key, keyWithWord, wordCharIndex, wordCipherIndex, dragging, plainWord, ciphers} = workspace;
-    return {key, keyWithWord, wordCharIndex, wordCipherIndex, dragging, plainWord, ciphers};
+    const {key, keyWithWord, wordCharIndex, wordCipherIndex, plainWord, ciphers} = workspace;
+    return {key, keyWithWord, wordCharIndex, wordCipherIndex, plainWord, ciphers};
   };
 
   const View = EpicComponent(self => {
 
+    self.state = {dragging: false};
+
     const onKeyChange = function (index, direction) {
       self.props.dispatch({type: deps.keyChange, index, direction});
-    }
+    };
 
     const onMouseDown = function (cipherIndex, charIndex) {
-      self.props.dispatch({type: deps.mouseDown, cipherIndex, charIndex});
-    }
+      self.setState({dragging: true});
+      self.props.dispatch({type: deps.setPlainWordPosition, cipherIndex, charIndex});
+    };
 
     const onMouseMove = function(cipherIndex, charIndex) {
-      self.props.dispatch({type: deps.mouseMove, cipherIndex, charIndex});
-    }
+      if (self.state.dragging) {
+        self.props.dispatch({type: deps.setPlainWordPosition, cipherIndex, charIndex});
+      }
+    };
 
     const onMouseUp = function() {
-      self.props.dispatch({type: deps.mouseUp});
-    }
+      self.setState({dragging: false});
+    };
 
     // TODO should these components be defined here? Do they need to be consts?
 
@@ -242,36 +244,10 @@ export default function* (deps) {
     return keyWithWord;
   }
 
-  // Dragging: handle mouse down.
-  yield addReducer('mouseDown', function (state, action) {
-    let {cipherIndex, charIndex} = action;
-    let {workspace} = state;
-    const dragging = true;
-    const wordCharIndex = charIndex;
-    const wordCipherIndex = cipherIndex;
-    let {key, keyWithWord, plainWord, ciphers} = workspace;
-    keyWithWord = generateKeyWithWord(key, plainWord, wordCharIndex, ciphers[cipherIndex]);
-    workspace = {...workspace, dragging, wordCharIndex, wordCipherIndex, keyWithWord};
-    return {...state, workspace};
-  });
-
-  // Dragging: handle mouse up.
-  yield addReducer('mouseUp', function (state, action) {
-    let {workspace} = state;
-    const dragging = false;
-    workspace = {...workspace, dragging};
-    return {...state, workspace};
-  });
-
   // Dragging: handle mouse movement.
-  yield addReducer('mouseMove', function (state, action) {
+  yield addReducer('setPlainWordPosition', function (state, action) {
     let {cipherIndex, charIndex} = action;
     let {workspace} = state;
-    let {dragging} = workspace;
-    if(!dragging) {
-      // TODO is it okay to "return state" instead? Or do we assume that a reducer changes the state?
-      return {...state};
-    }
     const wordCharIndex = charIndex;
     const wordCipherIndex = cipherIndex;
     let {key, keyWithWord, plainWord, ciphers} = workspace;
