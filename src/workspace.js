@@ -53,8 +53,7 @@ export default function* (deps) {
 
     const onKeyChange = function (index, direction) {
       const {key} = self.props.workspace;
-      const value = (key[index].value + parseInt(direction) + ALPHABET_SIZE) % ALPHABET_SIZE;
-      self.props.dispatch({type: deps.keyChange, index, value});
+      self.props.dispatch({type: deps.keyChange, index, direction});
     };
 
     const onMouseDown = function (cipherIndex, charIndex) {
@@ -128,22 +127,23 @@ export default function* (deps) {
 
   // Change the key value at the given index.
   yield addReducer('keyChange', function (state, action) {
-    const {index, value} = action;
+    const {index, direction} = action;
     let {workspace} = state;
     const {plainWord, wordCharIndex} = workspace;
     let {key, keyWithWord} = workspace;
+    const newValue = (key[index].value + parseInt(direction) + ALPHABET_SIZE) % ALPHABET_SIZE;
 
     // Update the key non-destructively.
     key = workspace.key.slice();
     key[index] = {
-      value: value
+      value: newValue
     };
 
     // Update keyWithWord unless the plain word hides the change.
     if (index < wordCharIndex || index >= wordCharIndex + plainWord.length) {
       keyWithWord = workspace.keyWithWord.slice();
       keyWithWord[index] = {
-        value: value
+        value: newValue
       };
     }
 
