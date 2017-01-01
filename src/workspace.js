@@ -151,7 +151,8 @@ export default function* (deps) {
     return {...state, workspace};
   });
 
-  // Dragging: handle mouse movement.
+  // Update the key so that the plain word appears at a specific position in
+  // the deciphered text.
   yield addReducer('setPlainWordPosition', function (state, action) {
     let {cipherIndex, charIndex} = action;
     let {workspace} = state;
