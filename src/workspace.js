@@ -56,8 +56,9 @@ export default function* (deps) {
   // Change the key value at the given index.
   yield addReducer('keyChange', function (state, action) {
     const {index, direction} = action;
-    let {workspace} = state;
-    const {plainWord, wordCharIndex} = workspace;
+    let {workspace, task} = state;
+    const {plainWord} = task;
+    const {wordCharIndex} = workspace;
     let {key, keyWithWord} = workspace;
     const newValue = (key[index].value + parseInt(direction) + ALPHABET_SIZE) % ALPHABET_SIZE;
 
