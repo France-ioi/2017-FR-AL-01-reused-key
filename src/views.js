@@ -123,7 +123,7 @@ export const View = actions => EpicComponent(self => {
   };
 
   self.componentDidMount = function () {
-    document.addEventlistener('mouseup', onMouseUp);
+    document.addEventListener('mouseup', onMouseUp);
   };
 
   self.componentWillUnmount = function () {
