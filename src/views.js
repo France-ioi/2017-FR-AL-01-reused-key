@@ -122,15 +122,22 @@ export const View = actions => EpicComponent(self => {
     self.setState({dragging: false});
   };
 
+  self.componentDidMount = function () {
+    document.addEventlistener('mouseup', onMouseUp);
+  };
+
+  self.componentWillUnmount = function () {
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
   self.render = function () {
     const {score, task, workspace, dispatch} = self.props;
     const {key, keyWithWord, wordCharIndex, wordCipherIndex} = workspace;
     const {ciphers, plainWord} = task;
     const wordStartIndex = Math.max(0, Math.min(wordCharIndex, key.length - plainWord.length));
     return (
-      /* TODO how to cach mouse up in entire document? */
       /* preventDefault is called because browsers default to a visual dragging of HTML elements */
-      <div onMouseUp={onMouseUp} onMouseMove={preventDefault}>
+      <div onMouseMove={preventDefault}>
         <table className="keyTable">
           <tr>
             {key.map(function(keyValue, keyIndex) {
