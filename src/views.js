@@ -93,6 +93,16 @@ export const Plain = EpicComponent(self => {
     );
   };
 });
+Plain.propTypes = {
+  cipherValue: React.PropTypes.string.isRequired,
+  wordCharIndex: React.PropTypes.number.isRequired,
+  wordCipherIndex: React.PropTypes.number.isRequired,
+  keyWithWord: React.PropTypes.arrayOf(React.PropTypes.number).isRequired,
+  cipherIndex: React.PropTypes.number.isRequired,
+  plainWord: React.PropTypes.string.isRequired,
+  onHover: React.PropTypes.func.isRequired,
+  onMouseDown: React.PropTypes.func.isRequired
+};
 
 const preventDefault = function (event) {
   event.preventDefault();
