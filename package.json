@@ -42,7 +42,10 @@
       "react-bootstrap": "npm:react-bootstrap@^0.30.7",
       "react-redux": "npm:react-redux@^5.0.1"
     },
-    "devDependencies": {},
+    "devDependencies": {
+      "module": "npm:jspm-nodelibs-module@^0.2.0",
+      "source-map-support": "npm:source-map-support@^0.4.8"
+    },
     "peerDependencies": {
       "assert": "npm:jspm-nodelibs-assert@^0.2.0",
       "buffer": "npm:jspm-nodelibs-buffer@^0.2.0",

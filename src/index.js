@@ -2,6 +2,9 @@
 import {defineSelector, defineView, include} from 'epic-linker';
 import {hostTask} from 'alkindi-task-lib';
 
+import process from 'process';
+import SourceMapSupport from 'source-map-support';
+
 import Task from './task';
 import AnswerDialog from './answer_dialog';
 import Workspace from './workspace';
@@ -12,6 +15,9 @@ import 'rc-tooltip/assets/bootstrap.css!';
 import '2017-fr-al-01-reused-key.css/style.css!';
 
 export function run (options) {
+   if (process.env.NODE_ENV === 'development') {
+      SourceMapSupport.install();
+   }
    hostTask(options, function* (deps) {
 
       /* The Task view displays the task to the contestant.
