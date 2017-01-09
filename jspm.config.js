@@ -222,22 +222,13 @@ SystemJS.config({
     },
     "npm:jspm-nodelibs-http@0.2.0": {
       "map": {
-        "http-browserify": "npm:stream-http@2.5.0"
+        "http-browserify": "npm:stream-http@2.6.0"
       }
     },
     "npm:browserify-zlib@0.1.4": {
       "map": {
         "readable-stream": "npm:readable-stream@2.2.2",
         "pako": "npm:pako@0.2.9"
-      }
-    },
-    "npm:stream-http@2.5.0": {
-      "map": {
-        "inherits": "npm:inherits@2.0.3",
-        "readable-stream": "npm:readable-stream@2.2.2",
-        "to-arraybuffer": "npm:to-arraybuffer@1.0.1",
-        "xtend": "npm:xtend@4.0.1",
-        "builtin-status-codes": "npm:builtin-status-codes@2.0.0"
       }
     },
     "npm:url@0.11.0": {
@@ -556,6 +547,15 @@ SystemJS.config({
         "html5shiv": "npm:html5shiv@3.7.3",
         "es6-shim": "npm:es6-shim@0.35.2",
         "react-dnd": "npm:react-dnd@2.1.4"
+      }
+    },
+    "npm:stream-http@2.6.0": {
+      "map": {
+        "inherits": "npm:inherits@2.0.3",
+        "readable-stream": "npm:readable-stream@2.2.2",
+        "builtin-status-codes": "npm:builtin-status-codes@3.0.0",
+        "to-arraybuffer": "npm:to-arraybuffer@1.0.1",
+        "xtend": "npm:xtend@4.0.1"
       }
     }
   }
