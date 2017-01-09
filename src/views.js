@@ -59,13 +59,13 @@ export const Cipher = EpicComponent(self => {
     const {value, index, onHover} = self.props;
     const cipherArray = value.split("");
     return (
-      <table className="cipherTable">
+      <table className="cipherTable"><tbody>
         <tr>
           {cipherArray.map(function(charValue, charIndex) {
             return <CipherChar key={charIndex} cipherIndex={index} charIndex={charIndex} value={charValue} onHover={onHover}/>
           })}
         </tr>
-      </table>
+      </tbody></table>
     );
   };
 });
@@ -86,14 +86,14 @@ export const Plain = EpicComponent(self => {
       }
     }
     return (
-      <table className="plainTable">
+      <table className="plainTable"><tbody>
         <tr>
           {plainArray.map(function(charValue, charIndex) {
             const inPlain = wordCipherIndex === cipherIndex && charIndex >= startIndex && charIndex < startIndex + plainWord.length;
             return <PlainChar key={charIndex} className={inPlain && "plainChar"} cipherIndex={cipherIndex} charIndex={charIndex} value={charValue} onMouseDown={onMouseDown} onHover={onHover}/>;
           })}
         </tr>
-      </table>
+      </tbody></table>
     );
   };
 });
@@ -153,7 +153,7 @@ export const View = function (actions) { const View = EpicComponent(self => {
     return (
       /* preventDefault is called because browsers default to a visual dragging of HTML elements */
       <div onMouseMove={preventDefault}>
-        <table className="keyTable">
+        <table className="keyTable"><tbody>
           <tr>
             {key.map(function(keyValue, keyIndex) {
               if(wordCipherIndex !== null && keyIndex >= wordStartIndex && keyIndex < wordStartIndex + plainWord.length) {
@@ -175,7 +175,7 @@ export const View = function (actions) { const View = EpicComponent(self => {
               return <td key={keyIndex}><KeyButton index={keyIndex} direction="-1" onChange={onKeyChange} /></td>;
             })}
           </tr>
-        </table>
+        </tbody></table>
         <div className="ciphersAndPlains">
           {ciphers.map(function(cipherValue, cipherIndex) {
             return (
