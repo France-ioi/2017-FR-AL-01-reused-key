@@ -1,17 +1,18 @@
-table {
+#container {
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
 }
-.keyTable td, .cipherTable td, .plainTable td {
-    width: 34px;
-    min-width: 34px;
-    max-width: 34px;
+.keyTable span {
+    width: 20px;
+    display: inline-block;
+    margin-right: 2px;
     text-align: center;
 }
-.keyTable {
-    margin-bottom: 40px;
+.keyTable span button {
+    padding: 0;
+    width: 100%;
 }
 .ciphersAndPlains {
     font-family: Lucida Console,Monaco,monospace;
@@ -23,12 +24,11 @@ table {
 .plainTable {
     background: #efefef;
 }
-
 .ciphersAndPlains span {
     width: 20px;
     display: inline-block;
-    text-align: center;
     margin-right: 2px;
+    text-align: center;
     border: 1px solid #ccc;
     height: 27px;
     vertical-align: bottom;

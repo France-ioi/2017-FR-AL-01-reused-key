@@ -13,11 +13,11 @@ export const KeyButton = EpicComponent(self => {
   };
   self.render = function () {
     const {index, direction} = self.props;
-    var text = "^";
+    var iconClassNames = "fa fa-caret-up";
     if(direction == "-1") {
-      text = "v";
+      iconClassNames = "fa fa-caret-down";
     }
-    return <Button onClick={onClick}>{text}</Button>;
+    return <Button onClick={onClick}><i className={iconClassNames} aria-hidden='true'></i></Button>;
   };
 }, {displayName: 'KeyButton'});
 
@@ -146,29 +146,29 @@ export const View = actions => EpicComponent(self => {
     return (
       /* preventDefault is called because browsers default to a visual dragging of HTML elements */
       <div onMouseMove={preventDefault}>
-        <table className="keyTable"><tbody>
-          <tr>
+        <div className="keyTable">
+          <div>
             {key.map(function(keyValue, keyIndex) {
               if(wordCipherIndex !== null && keyIndex >= wordStartIndex && keyIndex < wordStartIndex + plainWord.length) {
-                return <td key={keyIndex}></td>;
+                return <span key={keyIndex}></span>;
               }
-              return <td key={keyIndex}><KeyButton index={keyIndex} direction="1" onChange={onKeyChange} /></td>;
+              return <span key={keyIndex}><KeyButton index={keyIndex} direction="1" onChange={onKeyChange} /></span>;
             })}
-          </tr>
-          <tr>
+          </div>
+          <div>
             {keyWithWord.map(function(keyValue, keyIndex) {
-              return <td key={keyIndex}>{keyValue.value}</td>;
+              return <span key={keyIndex}>{keyValue.value}</span>;
             })}
-          </tr>
-          <tr>
+          </div>
+          <div>
             {key.map(function(keyValue, keyIndex) {
               if(wordCipherIndex !== null && keyIndex >= wordStartIndex && keyIndex < wordStartIndex + plainWord.length) {
-                return <td key={keyIndex}></td>;
+                return <span key={keyIndex}></span>;
               }
-              return <td key={keyIndex}><KeyButton index={keyIndex} direction="-1" onChange={onKeyChange} /></td>;
+              return <span key={keyIndex}><KeyButton index={keyIndex} direction="-1" onChange={onKeyChange} /></span>;
             })}
-          </tr>
-        </tbody></table>
+          </div>
+        </div>
         <div className="ciphersAndPlains">
           {ciphers.map(function(cipherValue, cipherIndex) {
             return (
