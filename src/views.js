@@ -20,6 +20,7 @@ export const KeyButton = EpicComponent(self => {
     return <Button onClick={onClick}>{text}</Button>;
   };
 });
+KeyButton.displayName = 'KeyButton';
 
 
 // A cell containing an encrypted character.
@@ -33,6 +34,7 @@ export const CipherChar = EpicComponent(self => {
     return <td className={className} onMouseMove={onHover}>{value}</td>
   };
 });
+CipherChar.displayName = 'CipherChar';
 
 // A cell containing a decrypted character.
 // props: cipherIndex, charIndex, onHover, className
@@ -48,6 +50,7 @@ export const PlainChar = EpicComponent(self => {
     return <td className={className} onMouseDown={onMouseDown} onMouseMove={onHover}>{value}</td>;
   };
 });
+PlainChar.displayName = 'PlainChar';
 
 // A displayed cipher (table of cipher character cells).
 // props: value, index, onHover
@@ -66,6 +69,7 @@ export const Cipher = EpicComponent(self => {
     );
   };
 });
+Cipher.displayName = 'Cipher';
 
 // A displayed decryption (table of plain character cells).
 // props: cipherValue, wordCharIndex, wordCipherIndex, keyWithWord, cipherIndex, plainWord,
@@ -103,12 +107,13 @@ Plain.propTypes = {
   onHover: React.PropTypes.func.isRequired,
   onMouseDown: React.PropTypes.func.isRequired
 };
+Plain.displayName = 'Plain';
 
 const preventDefault = function (event) {
   event.preventDefault();
 };
 
-export const View = actions => EpicComponent(self => {
+export const View = function (actions) { const View = EpicComponent(self => {
 
   self.state = {dragging: false};
 
@@ -185,4 +190,4 @@ export const View = actions => EpicComponent(self => {
     );
   };
 
-});
+});  View.displayName = 'View';  return View; };
