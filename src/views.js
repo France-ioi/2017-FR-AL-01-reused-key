@@ -19,8 +19,7 @@ export const KeyButton = EpicComponent(self => {
     }
     return <Button onClick={onClick}>{text}</Button>;
   };
-});
-KeyButton.displayName = 'KeyButton';
+}, {displayName: 'KeyButton'});
 
 
 // A cell containing an encrypted character.
@@ -33,8 +32,7 @@ export const CipherChar = EpicComponent(self => {
     const {className, value} = self.props;
     return <td className={className} onMouseMove={onHover}>{value}</td>
   };
-});
-CipherChar.displayName = 'CipherChar';
+}, {displayName: 'CipherChar'});
 
 // A cell containing a decrypted character.
 // props: cipherIndex, charIndex, onHover, className
@@ -49,8 +47,7 @@ export const PlainChar = EpicComponent(self => {
     const {className, value} = self.props;
     return <td className={className} onMouseDown={onMouseDown} onMouseMove={onHover}>{value}</td>;
   };
-});
-PlainChar.displayName = 'PlainChar';
+}, {displayName: 'PlainChar'});
 
 // A displayed cipher (table of cipher character cells).
 // props: value, index, onHover
@@ -68,8 +65,7 @@ export const Cipher = EpicComponent(self => {
       </tbody></table>
     );
   };
-});
-Cipher.displayName = 'Cipher';
+}, {displayName: 'Cipher'});
 
 // A displayed decryption (table of plain character cells).
 // props: cipherValue, wordCharIndex, wordCipherIndex, keyWithWord, cipherIndex, plainWord,
@@ -96,24 +92,25 @@ export const Plain = EpicComponent(self => {
       </tbody></table>
     );
   };
+}, {
+  displayName: 'Plain',
+  propTypes: {
+    cipherValue: React.PropTypes.string.isRequired,
+    wordCharIndex: React.PropTypes.number.isRequired,
+    wordCipherIndex: React.PropTypes.number,
+    keyWithWord: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+    cipherIndex: React.PropTypes.number.isRequired,
+    plainWord: React.PropTypes.string.isRequired,
+    onHover: React.PropTypes.func.isRequired,
+    onMouseDown: React.PropTypes.func.isRequired
+  }
 });
-Plain.propTypes = {
-  cipherValue: React.PropTypes.string.isRequired,
-  wordCharIndex: React.PropTypes.number.isRequired,
-  wordCipherIndex: React.PropTypes.number,
-  keyWithWord: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
-  cipherIndex: React.PropTypes.number.isRequired,
-  plainWord: React.PropTypes.string.isRequired,
-  onHover: React.PropTypes.func.isRequired,
-  onMouseDown: React.PropTypes.func.isRequired
-};
-Plain.displayName = 'Plain';
 
 const preventDefault = function (event) {
   event.preventDefault();
 };
 
-export const View = function (actions) { const View = EpicComponent(self => {
+export const View = actions => EpicComponent(self => {
 
   self.state = {dragging: false};
 
@@ -190,4 +187,4 @@ export const View = function (actions) { const View = EpicComponent(self => {
     );
   };
 
-});  View.displayName = 'View';  return View; };
+}, {displayName: 'View'});
