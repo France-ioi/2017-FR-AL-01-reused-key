@@ -62,7 +62,7 @@ export const Cipher = EpicComponent(self => {
       <table className="cipherTable">
         <tr>
           {cipherArray.map(function(charValue, charIndex) {
-            return <CipherChar cipherIndex={index} charIndex={charIndex} value={charValue} onHover={onHover}/>
+            return <CipherChar key={charIndex} cipherIndex={index} charIndex={charIndex} value={charValue} onHover={onHover}/>
           })}
         </tr>
       </table>
@@ -90,7 +90,7 @@ export const Plain = EpicComponent(self => {
         <tr>
           {plainArray.map(function(charValue, charIndex) {
             const inPlain = wordCipherIndex === cipherIndex && charIndex >= startIndex && charIndex < startIndex + plainWord.length;
-            return <PlainChar className={inPlain && "plainChar"} cipherIndex={cipherIndex} charIndex={charIndex} value={charValue} onMouseDown={onMouseDown} onHover={onHover}/>;
+            return <PlainChar key={charIndex} className={inPlain && "plainChar"} cipherIndex={cipherIndex} charIndex={charIndex} value={charValue} onMouseDown={onMouseDown} onHover={onHover}/>;
           })}
         </tr>
       </table>
@@ -179,7 +179,7 @@ export const View = function (actions) { const View = EpicComponent(self => {
         <div className="ciphersAndPlains">
           {ciphers.map(function(cipherValue, cipherIndex) {
             return (
-              <div>
+              <div key={cipherIndex}>
                 <Cipher index={cipherIndex} value={cipherValue} onHover={onHover} />
                 <Plain cipherIndex={cipherIndex} cipherValue={cipherValue} keyWithWord={keyWithWord} wordCharIndex={wordCharIndex} wordCipherIndex={wordCipherIndex} plainWord={plainWord} onMouseDown={onMouseDown} onHover={onHover} />
               </div>
