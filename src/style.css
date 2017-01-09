@@ -14,18 +14,27 @@ table {
     margin-bottom: 40px;
 }
 .ciphersAndPlains {
-    font-family: Courier New, Courier, monospace;
-    font-size: 30px;
+    font-family: Lucida Console,Monaco,monospace;
+    font-size: 18px;
 }
-
 .cipherTable {
     margin-top: 20px;
 }
-
 .plainTable {
     background: lightgray;
 }
 
+.ciphersAndPlains span {
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+    margin-right: 2px;
+    border: 1px solid #777;
+    height: 27px;
+    vertical-align: bottom;
+}
+.cipherTable span {border-bottom: none;}
+.plainTable span {border-top: none;}
 .plainChar {
     background-color: yellow;
 }

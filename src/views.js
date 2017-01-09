@@ -30,7 +30,7 @@ export const CipherChar = EpicComponent(self => {
   }
   self.render = function () {
     const {className, value} = self.props;
-    return <td className={className} onMouseMove={onHover}>{value}</td>
+    return <span className={className} onMouseMove={onHover}>{value}</span>
   };
 }, {displayName: 'CipherChar'});
 
@@ -45,7 +45,7 @@ export const PlainChar = EpicComponent(self => {
   }
   self.render = function () {
     const {className, value} = self.props;
-    return <td className={className} onMouseDown={onMouseDown} onMouseMove={onHover}>{value}</td>;
+    return <span className={className} onMouseDown={onMouseDown} onMouseMove={onHover}>{value}</span>;
   };
 }, {displayName: 'PlainChar'});
 
@@ -56,13 +56,11 @@ export const Cipher = EpicComponent(self => {
     const {value, index, onHover} = self.props;
     const cipherArray = value.split("");
     return (
-      <table className="cipherTable"><tbody>
-        <tr>
-          {cipherArray.map(function(charValue, charIndex) {
-            return <CipherChar key={charIndex} cipherIndex={index} charIndex={charIndex} value={charValue} onHover={onHover}/>
-          })}
-        </tr>
-      </tbody></table>
+      <div className="cipherTable">
+        {cipherArray.map(function(charValue, charIndex) {
+          return <CipherChar key={charIndex} cipherIndex={index} charIndex={charIndex} value={charValue} onHover={onHover}/>
+        })}
+      </div>
     );
   };
 }, {displayName: 'Cipher'});
@@ -82,14 +80,12 @@ export const Plain = EpicComponent(self => {
       }
     }
     return (
-      <table className="plainTable"><tbody>
-        <tr>
-          {plainArray.map(function(charValue, charIndex) {
-            const inPlain = wordCipherIndex === cipherIndex && charIndex >= startIndex && charIndex < startIndex + plainWord.length;
-            return <PlainChar key={charIndex} className={inPlain && "plainChar"} cipherIndex={cipherIndex} charIndex={charIndex} value={charValue} onMouseDown={onMouseDown} onHover={onHover}/>;
-          })}
-        </tr>
-      </tbody></table>
+      <div className="plainTable">
+        {plainArray.map(function(charValue, charIndex) {
+          const inPlain = wordCipherIndex === cipherIndex && charIndex >= startIndex && charIndex < startIndex + plainWord.length;
+          return <PlainChar key={charIndex} className={inPlain && "plainChar"} cipherIndex={cipherIndex} charIndex={charIndex} value={charValue} onMouseDown={onMouseDown} onHover={onHover}/>;
+        })}
+      </div>
     );
   };
 }, {
