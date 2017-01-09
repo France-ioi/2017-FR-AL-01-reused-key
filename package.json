@@ -35,7 +35,7 @@
       "bootstrap": "github:twbs/bootstrap@^3.3.7",
       "classnames": "npm:classnames@^2.2.5",
       "css": "github:systemjs/plugin-css@^0.1.32",
-      "epic-component": "npm:epic-component@^1.0.2",
+      "epic-component": "npm:epic-component@^1.1.0",
       "epic-linker": "npm:epic-linker@^1.1.0",
       "font-awesome": "npm:font-awesome@^4.7.0",
       "rc-tooltip": "npm:rc-tooltip@^3.4.2",
