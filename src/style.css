@@ -21,7 +21,7 @@ table {
     margin-top: 20px;
 }
 .plainTable {
-    background: lightgray;
+    background: #efefef;
 }
 
 .ciphersAndPlains span {
@@ -29,12 +29,21 @@ table {
     display: inline-block;
     text-align: center;
     margin-right: 2px;
-    border: 1px solid #777;
+    border: 1px solid #ccc;
     height: 27px;
     vertical-align: bottom;
 }
 .cipherTable span {border-bottom: none;}
 .plainTable span {border-top: none;}
-.plainChar {
-    background-color: yellow;
+.plainTable .plainChar {
+    background-color: #fff;
+    box-shadow: 3px 2px 3px #ccc;
+    border-top: 1px solid;
+    border-color: #777;
+    background-clip: content-box;
+}
+.plainChar + .plainChar {
+    margin-left: -4px;
+    border-left-color: transparent;
+    width: 24px;
 }
