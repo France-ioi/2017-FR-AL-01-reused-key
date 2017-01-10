@@ -108,7 +108,7 @@ const preventDefault = function (event) {
 
 export const View = actions => EpicComponent(self => {
 
-  self.state = {dragging: false};
+  self.state = {dragging: false, dropOutside: false};
 
   const onKeyChange = function (index, direction) {
     const {key} = self.props.workspace;
@@ -116,18 +116,28 @@ export const View = actions => EpicComponent(self => {
   };
 
   const onMouseDown = function (cipherIndex, charIndex) {
-    self.setState({dragging: true});
+    self.setState({dragging: true, dropOutside: false});
     self.props.dispatch({type: actions.setPlainWordPosition, cipherIndex, charIndex});
   };
 
   const onHover = function(cipherIndex, charIndex) {
     if (self.state.dragging) {
+      self.setState({dropOutside: false});
       self.props.dispatch({type: actions.setPlainWordPosition, cipherIndex, charIndex});
+    }
+  };
+
+  const onMouseLeave = function() {
+    if (self.state.dragging) {
+      self.setState({dropOutside: true});
     }
   };
 
   const onMouseUp = function() {
     self.setState({dragging: false});
+    if(self.state.dropOutside) {
+      self.props.dispatch({type: actions.setPlainWordPosition, cipherIndex: null, charIndex: 0});
+    }
   };
 
   self.componentDidMount = function () {
@@ -172,7 +182,7 @@ export const View = actions => EpicComponent(self => {
         <div className="ciphersAndPlains">
           {ciphers.map(function(cipherValue, cipherIndex) {
             return (
-              <div key={cipherIndex}>
+              <div key={cipherIndex} onMouseLeave={onMouseLeave}>
                 <Cipher index={cipherIndex} value={cipherValue} onHover={onHover} />
                 <Plain cipherIndex={cipherIndex} cipherValue={cipherValue} keyWithWord={keyWithWord} wordCharIndex={wordCharIndex} wordCipherIndex={wordCipherIndex} plainWord={plainWord} onMouseDown={onMouseDown} onHover={onHover} />
               </div>

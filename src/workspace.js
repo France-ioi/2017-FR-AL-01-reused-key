@@ -86,7 +86,14 @@ export default function* (deps) {
     const {cipherIndex, charIndex} = action;
     let {workspace} = state;
     const {plainWord, ciphers} = state.task;
-    const keyWithWord = generateKeyWithWord(workspace.key, plainWord, charIndex, ciphers[cipherIndex]);
+    const {key} = workspace;
+    let keyWithWord;
+    if(cipherIndex === null) {
+      keyWithWord = key.slice();
+    }
+    else {
+      keyWithWord = generateKeyWithWord(key, plainWord, charIndex, ciphers[cipherIndex]);
+    }
     workspace = {...workspace, wordCharIndex: charIndex, wordCipherIndex: cipherIndex, keyWithWord};
     return {...state, workspace};
   });
