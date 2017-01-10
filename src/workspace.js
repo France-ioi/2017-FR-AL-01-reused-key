@@ -58,7 +58,7 @@ export default function* (deps) {
     const {index, direction} = action;
     let {workspace, task} = state;
     const {plainWord} = task;
-    const {wordCharIndex} = workspace;
+    const {wordCharIndex, wordCipherIndex} = workspace;
     let {key, keyWithWord} = workspace;
     const newValue = (key[index].value + parseInt(direction) + ALPHABET_SIZE) % ALPHABET_SIZE;
 
@@ -69,7 +69,7 @@ export default function* (deps) {
     };
 
     // Update keyWithWord unless the plain word hides the change.
-    if (index < wordCharIndex || index >= wordCharIndex + plainWord.length) {
+    if (wordCipherIndex === null || index < wordCharIndex || index >= wordCharIndex + plainWord.length) {
       keyWithWord = workspace.keyWithWord.slice();
       keyWithWord[index] = {
         value: newValue
