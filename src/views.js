@@ -22,6 +22,21 @@ export const KeyButton = EpicComponent(self => {
 }, {displayName: 'KeyButton'});
 
 
+// Display a number in the key, click to get a hint.
+// props: index, value, isHint, onRequestHint
+export const KeyValue = EpicComponent(self => {
+  const onClick = function () {
+    if (!self.props.isHint) {
+      self.props.onRequestHint(self.props.index);
+    }
+  };
+  self.render = function () {
+    const {isHint, value} = self.props;
+    return <span className={isHint && "is-hint"} onClick={onClick}>{value}</span>;
+  };
+}, {displayName: 'KeyValue'});
+
+
 // A cell containing an encrypted character.
 // props: cipherIndex, charIndex, onHover, className
 export const CipherChar = EpicComponent(self => {
@@ -133,6 +148,11 @@ export const View = actions => EpicComponent(self => {
     }
   };
 
+  const onRequestHint = function (keyIndex) {
+    const request = {keyIndex};
+    self.props.dispatch({type: actions.requestHint, request});
+  };
+
   const onMouseUp = function() {
     self.setState({dragging: false});
     if(self.state.dropOutside) {
@@ -150,32 +170,42 @@ export const View = actions => EpicComponent(self => {
 
   self.render = function () {
     const {score, task, workspace, dispatch} = self.props;
-    const {key, keyWithWord, wordCharIndex, wordCipherIndex} = workspace;
+    const {keyWithHints, keyWithWord, wordCharIndex, wordCipherIndex} = workspace;
     const {ciphers, plainWord} = task;
-    const wordStartIndex = Math.max(0, Math.min(wordCharIndex, key.length - plainWord.length));
+    const wordStartIndex = Math.max(0, Math.min(wordCharIndex, keyWithHints.length - plainWord.length));
     return (
       /* preventDefault is called because browsers default to a visual dragging of HTML elements */
       <div onMouseMove={preventDefault}>
         <div className="keyTable">
           <div>
-            {key.map(function(keyValue, keyIndex) {
+            {keyWithHints.map(function(keyValue, keyIndex) {
               if(wordCipherIndex !== null && keyIndex >= wordStartIndex && keyIndex < wordStartIndex + plainWord.length) {
                 return <span key={keyIndex}></span>;
               }
-              return <span key={keyIndex}><KeyButton index={keyIndex} direction="1" onChange={onKeyChange} /></span>;
+              return (
+                <span key={keyIndex}>
+                  {keyValue.isHint || <KeyButton index={keyIndex} direction="1" onChange={onKeyChange} />}
+                </span>
+              );
             })}
           </div>
           <div>
             {keyWithWord.map(function(keyValue, keyIndex) {
-              return <span key={keyIndex}>{keyValue.value}</span>;
+              return (
+                <KeyValue key={keyIndex} index={keyIndex} value={keyValue.value} isHint={keyValue.isHint} onRequestHint={onRequestHint}/>
+              );
             })}
           </div>
           <div>
-            {key.map(function(keyValue, keyIndex) {
+            {keyWithHints.map(function(keyValue, keyIndex) {
               if(wordCipherIndex !== null && keyIndex >= wordStartIndex && keyIndex < wordStartIndex + plainWord.length) {
                 return <span key={keyIndex}></span>;
               }
-              return <span key={keyIndex}><KeyButton index={keyIndex} direction="-1" onChange={onKeyChange} /></span>;
+              return (
+                <span key={keyIndex}>
+                  {keyValue.isHint || <KeyButton index={keyIndex} direction="-1" onChange={onKeyChange} />}
+                </span>
+              );
             })}
           </div>
         </div>

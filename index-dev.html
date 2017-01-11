@@ -17,13 +17,15 @@
     var plainWord = "ONE";
     // TODO choose key and use it.
     var secretKey = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
-  
+
     // TODO hints.
     var task = {ciphers, plainWord, hints: {}};
+    var full_task = Object.assign({secretKey: secretKey}, task);
     main.run({
       container: document.getElementById('container'),
       score: 100,
       task: task,
+      full_task: full_task,
       view: 'workspace'
     });
   });

@@ -1,10 +1,11 @@
 import React from 'react';
 import EpicComponent from 'epic-component';
-import {include, defineAction, addReducer} from 'epic-linker';
+import {include, use, defineAction, addReducer, addSaga} from 'epic-linker';
 import WorkspaceBuilder from 'alkindi-task-lib/simple_workspace';
 
 import {generateKeyWithWord, ALPHABET_SIZE} from './utils';
 import {View} from './views';
+import {grantHint, getTask} from './hints';
 
 export default function* (deps) {
 
@@ -13,18 +14,18 @@ export default function* (deps) {
   yield defineAction('keyChange', 'Workspace.KeyChange');
   yield defineAction('setPlainWordPosition', 'Workspace.SetPlainWordPosition');
 
+  // The 'requestHint' action is passed to the workspace's View.
+  yield use('requestHint');
+
   /* Simple workspace interface: init, dump, load, update, View */
 
   const init = function (task) {
     const {ciphers} = task;
     const key = [];
     for (let index = 0; index < ciphers[0].length; index++) {
-      key.push({
-        value: 0
-      });
+      key.push(0);
     }
-    const keyWithWord = key.slice(0);
-    return {key, keyWithWord, wordCharIndex: 0, wordCipherIndex: null};
+    return update(task, {key, wordCharIndex: 0, wordCipherIndex: null});
   };
 
   const dump = function (workspace) {
@@ -41,13 +42,38 @@ export default function* (deps) {
   };
 
   const update = function (task, workspace) {
-    const {plainWord, ciphers} = task;
+    const {plainWord, ciphers, hints} = task;
     const {key, wordCharIndex, wordCipherIndex} = workspace;
-    const keyWithWord = generateKeyWithWord(key, plainWord, wordCharIndex, ciphers[wordCipherIndex]);
-    return {...workspace, keyWithWord};
+    // Update the key with hints.
+    const keyWithHints = key.map(function (value, index) {
+      if (index in hints) {
+        return {value: hints[index], isHint: true};
+      } else {
+        return {value: value, isHint: false};
+      }
+    });
+    // Update the key with the positioned word.
+    const keyWithWord = wordCipherIndex ? generateKeyWithWord(keyWithHints, plainWord, wordCharIndex, ciphers[wordCipherIndex]) : keyWithHints;
+    return {...workspace, keyWithHints, keyWithWord};
   };
 
   yield include(WorkspaceBuilder({init, dump, load, update, View: View(deps)}));
+
+  /*
+    Temporary reducer for local processing of hints during development.
+    This will ultimately be provided by the WorkspaceBuilder.
+  */
+  yield addReducer('requestHint', function (state, action) {
+     // Process the hint request locally only if full_task is available.
+     let {full_task} = state;
+     if (!full_task) {
+        return state;
+     }
+     const {request} = action;
+     full_task = grantHint(full_task, request);
+     const task = getTask(full_task);
+     return {...state, task, full_task, workspace: update(task, state.workspace)};
+  });
 
   /*
     Add reducers for workspace actions and any needed sagas below:
@@ -60,23 +86,13 @@ export default function* (deps) {
     const {plainWord} = task;
     const {wordCharIndex, wordCipherIndex} = workspace;
     let {key, keyWithWord} = workspace;
-    const newValue = (key[index].value + parseInt(direction) + ALPHABET_SIZE) % ALPHABET_SIZE;
+    const newValue = (key[index] + parseInt(direction) + ALPHABET_SIZE) % ALPHABET_SIZE;
 
     // Update the key non-destructively.
     key = workspace.key.slice();
-    key[index] = {
-      value: newValue
-    };
+    key[index] = newValue;
 
-    // Update keyWithWord unless the plain word hides the change.
-    if (wordCipherIndex === null || index < wordCharIndex || index >= wordCharIndex + plainWord.length) {
-      keyWithWord = workspace.keyWithWord.slice();
-      keyWithWord[index] = {
-        value: newValue
-      };
-    }
-
-    workspace = {...workspace, key, keyWithWord};
+    workspace = update(task, {...workspace, key});
     return {...state, workspace};
   });
 
@@ -85,16 +101,7 @@ export default function* (deps) {
   yield addReducer('setPlainWordPosition', function (state, action) {
     const {cipherIndex, charIndex} = action;
     let {workspace} = state;
-    const {plainWord, ciphers} = state.task;
-    const {key} = workspace;
-    let keyWithWord;
-    if(cipherIndex === null) {
-      keyWithWord = key.slice();
-    }
-    else {
-      keyWithWord = generateKeyWithWord(key, plainWord, charIndex, ciphers[cipherIndex]);
-    }
-    workspace = {...workspace, wordCharIndex: charIndex, wordCipherIndex: cipherIndex, keyWithWord};
+    workspace = update(state.task, {...workspace, wordCharIndex: charIndex, wordCipherIndex: cipherIndex});
     return {...state, workspace};
   });
 };
