@@ -30,11 +30,11 @@
     "name": "2017-fr-al-01-reused-key",
     "main": "index.js",
     "dependencies": {
-      "alkindi-task-lib": "npm:alkindi-task-lib@^1.3.2",
+      "alkindi-task-lib": "npm:alkindi-task-lib@^1.3.3",
       "bootstrap": "github:twbs/bootstrap@^3.3.7",
       "classnames": "npm:classnames@^2.2.5",
       "css": "github:systemjs/plugin-css@^0.1.32",
-      "epic-component": "npm:epic-component@^1.1.1",
+      "epic-component": "npm:epic-component@^1.1.2",
       "font-awesome": "npm:font-awesome@^4.7.0",
       "rc-tooltip": "npm:rc-tooltip@^3.4.2",
       "react-bootstrap": "npm:react-bootstrap@^0.30.7"

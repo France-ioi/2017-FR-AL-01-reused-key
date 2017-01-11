@@ -35,7 +35,7 @@ SystemJS.config({
     "github:*/*.json"
   ],
   map: {
-    "alkindi-task-lib": "npm:alkindi-task-lib@1.3.2",
+    "alkindi-task-lib": "npm:alkindi-task-lib@1.3.3",
     "assert": "npm:jspm-nodelibs-assert@0.2.0",
     "babel-runtime": "npm:babel-runtime@6.20.0",
     "bootstrap": "github:twbs/bootstrap@3.3.7",
@@ -46,7 +46,7 @@ SystemJS.config({
     "crypto": "npm:jspm-nodelibs-crypto@0.2.0",
     "css": "github:systemjs/plugin-css@0.1.32",
     "domain": "npm:jspm-nodelibs-domain@0.2.0",
-    "epic-component": "npm:epic-component@1.1.1",
+    "epic-component": "npm:epic-component@1.1.2",
     "epic-linker": "npm:epic-linker@1.3.4",
     "events": "npm:jspm-nodelibs-events@0.2.0",
     "font-awesome": "npm:font-awesome@4.7.0",
@@ -536,17 +536,17 @@ SystemJS.config({
         "babel-runtime": "npm:babel-runtime@6.20.0"
       }
     },
-    "npm:alkindi-task-lib@1.3.2": {
+    "npm:alkindi-task-lib@1.3.3": {
       "map": {
-        "object.assign": "npm:object.assign@4.0.4",
-        "es6-promise": "npm:es6-promise@4.0.5",
-        "es5-shim": "npm:es5-shim@4.5.9",
-        "es6-shim": "npm:es6-shim@0.35.2",
         "array.prototype.fill": "npm:array.prototype.fill@1.0.2",
         "es5-sham-ie8": "npm:es5-sham-ie8@1.0.1",
+        "es6-promise": "npm:es6-promise@4.0.5",
+        "es5-shim": "npm:es5-shim@4.5.9",
+        "object.assign": "npm:object.assign@4.0.4",
+        "es6-shim": "npm:es6-shim@0.35.2",
+        "epic-component": "npm:epic-component@1.1.2",
         "rc-tooltip": "npm:rc-tooltip@3.4.2",
-        "html5shiv": "npm:html5shiv@3.7.3",
-        "epic-component": "npm:epic-component@1.1.1"
+        "html5shiv": "npm:html5shiv@3.7.3"
       }
     }
   }
