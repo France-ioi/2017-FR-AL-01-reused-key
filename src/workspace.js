@@ -53,7 +53,7 @@ export default function* (deps) {
       }
     });
     // Update the key with the positioned word.
-    const keyWithWord = wordCipherIndex ? generateKeyWithWord(keyWithHints, plainWord, wordCharIndex, ciphers[wordCipherIndex]) : keyWithHints;
+    const keyWithWord = (wordCipherIndex !== null) ? generateKeyWithWord(keyWithHints, plainWord, wordCharIndex, ciphers[wordCipherIndex]) : keyWithHints;
     return {...workspace, keyWithHints, keyWithWord};
   };
 
