@@ -1,6 +1,7 @@
 
 import React from 'react';
 import {Button} from 'react-bootstrap';
+import classnames from 'classnames';
 import EpicComponent from 'epic-component';
 
 import {decrypt} from './utils';
@@ -13,11 +14,8 @@ export const KeyButton = EpicComponent(self => {
   };
   self.render = function () {
     const {index, direction} = self.props;
-    var iconClassNames = "fa fa-caret-up";
-    if(direction == "-1") {
-      iconClassNames = "fa fa-caret-down";
-    }
-    return <Button onClick={onClick}><i className={iconClassNames} aria-hidden='true'></i></Button>;
+    const iconClasses = ["fa", direction == "-1" ? "fa-caret-down" : "fa-caret-up"];
+    return <Button onClick={onClick}><i className={classnames(iconClasses)} aria-hidden='true'></i></Button>;
   };
 }, {displayName: 'KeyButton'});
 
@@ -32,14 +30,8 @@ export const KeyValue = EpicComponent(self => {
   };
   self.render = function () {
     const {isHint, hintMismatch, value} = self.props;
-    let className = "";
-    if(isHint) {
-      className = "is-hint";
-      if(hintMismatch) {
-        className = "is-hint-mismatch";
-      }
-    }
-    return <span className={className} onClick={onClick}>{value}</span>;
+    const classes = [isHint && "is-hint", hintMismatch && "is-hint-mismatch"];
+    return <span className={classnames(classes)} onClick={onClick}>{value}</span>;
   };
 }, {displayName: 'KeyValue'});
 
@@ -67,11 +59,8 @@ export const PlainChar = EpicComponent(self => {
   }
   self.render = function () {
     const {className, value, hintMismatch} = self.props;
-    let classString = className;
-    if(hintMismatch) {
-      classString += " is-hint-mismatch";
-    }
-    return <span className={classString} onMouseDown={onMouseDown} onMouseMove={onHover}>{value}</span>;
+    const classes = [className, hintMismatch && "is-hint-mismatch"];
+    return <span className={classnames(classes)} onMouseDown={onMouseDown} onMouseMove={onHover}>{value}</span>;
   };
 }, {displayName: 'PlainChar'});
 
