@@ -1272,7 +1272,7 @@
        var cipher = "";
        for (var iWord = 0; iWord < cipherLengths[iCipher].length; iWord++) {
           if (iWord != 0) {
-             cipher += "_";
+             cipher += " ";
           }
           var length = cipherLengths[iCipher][iWord];
           var iChoice = Math.trunc(Math.random() * words[length - minLength].length);
@@ -1304,7 +1304,7 @@
        for (var iLetter = 0; iLetter < secretKey.length; iLetter++) {
           var letter = ciphers[iCipher][iLetter];
           if ((letter == ' ') || (letter == '_')) {
-             newCipher += '_';
+             newCipher += ' ';
           } else {
              var rank = letter.charCodeAt(0) - "A".charCodeAt(0);
              rank = (rank + secretKey[iLetter]) % 26;
