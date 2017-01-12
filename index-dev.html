@@ -1307,7 +1307,7 @@
              newCipher += ' ';
           } else {
              var rank = letter.charCodeAt(0) - "A".charCodeAt(0);
-             rank = (rank + secretKey[iLetter]) % 26;
+             rank = (rank - secretKey[iLetter] + 26) % 26;
              newCipher += String.fromCharCode(rank + "A".charCodeAt(0));
           }
        }
