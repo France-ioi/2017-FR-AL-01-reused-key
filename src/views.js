@@ -23,7 +23,7 @@ export const KeyButton = EpicComponent(self => {
 
 
 // Display a number in the key, click to get a hint.
-// props: index, value, isHint, onRequestHint
+// props: index, value, isHint, onRequestHint, hintMismatch.
 export const KeyValue = EpicComponent(self => {
   const onClick = function () {
     if (!self.props.isHint) {
@@ -31,8 +31,15 @@ export const KeyValue = EpicComponent(self => {
     }
   };
   self.render = function () {
-    const {isHint, value} = self.props;
-    return <span className={isHint && "is-hint"} onClick={onClick}>{value}</span>;
+    const {isHint, hintMismatch, value} = self.props;
+    let className = "";
+    if(isHint) {
+      className = "is-hint";
+      if(hintMismatch) {
+        className = "is-hint-mismatch";
+      }
+    }
+    return <span className={className} onClick={onClick}>{value}</span>;
   };
 }, {displayName: 'KeyValue'});
 
@@ -50,7 +57,7 @@ export const CipherChar = EpicComponent(self => {
 }, {displayName: 'CipherChar'});
 
 // A cell containing a decrypted character.
-// props: cipherIndex, charIndex, onHover, className
+// props: cipherIndex, charIndex, onHover, className, hintMismatch.
 export const PlainChar = EpicComponent(self => {
   function onHover() {
     self.props.onHover(self.props.cipherIndex, self.props.charIndex);
@@ -59,8 +66,12 @@ export const PlainChar = EpicComponent(self => {
     self.props.onMouseDown(self.props.cipherIndex, self.props.charIndex);
   }
   self.render = function () {
-    const {className, value} = self.props;
-    return <span className={className} onMouseDown={onMouseDown} onMouseMove={onHover}>{value}</span>;
+    const {className, value, hintMismatch} = self.props;
+    let classString = className;
+    if(hintMismatch) {
+      classString += " is-hint-mismatch";
+    }
+    return <span className={classString} onMouseDown={onMouseDown} onMouseMove={onHover}>{value}</span>;
   };
 }, {displayName: 'PlainChar'});
 
@@ -98,7 +109,7 @@ export const Plain = EpicComponent(self => {
       <div className="plainTable">
         {plainArray.map(function(charValue, charIndex) {
           const inPlain = wordCipherIndex === cipherIndex && charIndex >= startIndex && charIndex < startIndex + plainWord.length;
-          return <PlainChar key={charIndex} className={inPlain && "plainChar"} cipherIndex={cipherIndex} charIndex={charIndex} value={charValue} onMouseDown={onMouseDown} onHover={onHover}/>;
+          return <PlainChar key={charIndex} className={inPlain && "plainChar"} cipherIndex={cipherIndex} charIndex={charIndex} value={charValue} onMouseDown={onMouseDown} onHover={onHover} hintMismatch={keyWithWord[charIndex].hintMismatch}/>;
         })}
       </div>
     );
@@ -192,7 +203,7 @@ export const View = actions => EpicComponent(self => {
           <div>
             {keyWithWord.map(function(keyValue, keyIndex) {
               return (
-                <KeyValue key={keyIndex} index={keyIndex} value={keyValue.value} isHint={keyValue.isHint} onRequestHint={onRequestHint}/>
+                <KeyValue key={keyIndex} index={keyIndex} value={keyValue.value} isHint={keyValue.isHint} hintMismatch={keyValue.hintMismatch} onRequestHint={onRequestHint}/>
               );
             })}
           </div>

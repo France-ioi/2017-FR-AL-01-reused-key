@@ -34,6 +34,11 @@ export function generateKeyWithWord(key, plainWord, wordCharIndex, cipher) {
         value: (plainWord.charCodeAt(index - wordStartIndex) - cipher.charCodeAt(index) + ALPHABET_SIZE) % ALPHABET_SIZE
       };
     }
+    if(key[index].isHint && key[index].value !== keyWithWord[index].value) {
+      keyWithWord[index].hintMismatch = true;
+      keyWithWord[index].isHint = true;
+      keyWithWord[index].value = key[index].value;
+    }
   }
   return keyWithWord;
 }

@@ -47,3 +47,7 @@
     border-left-color: transparent;
     width: 24px;
 }
+
+.is-hint-mismatch {
+    background-color: #ff4444 !important;
+}
