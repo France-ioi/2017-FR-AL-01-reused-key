@@ -8,6 +8,7 @@ import SourceMapSupport from 'source-map-support';
 import Task from './task';
 import AnswerDialog from './answer_dialog';
 import Workspace from './workspace';
+export {default as generate} from './generate';
 
 import 'font-awesome/css/font-awesome.css!';
 import 'bootstrap/dist/css/bootstrap.css!';
