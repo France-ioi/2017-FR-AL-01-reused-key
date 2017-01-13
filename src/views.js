@@ -21,7 +21,7 @@ export const KeyButton = EpicComponent(self => {
 
 
 // Display a number in the key, click to get a hint.
-// props: index, value, isHint, onRequestHint, hintMismatch.
+// props: index, value, isHint, onRequestHint, hintRequest, hintMismatch.
 export const KeyValue = EpicComponent(self => {
   const onClick = function () {
     if (!self.props.isHint) {
@@ -29,8 +29,13 @@ export const KeyValue = EpicComponent(self => {
     }
   };
   self.render = function () {
-    const {isHint, hintMismatch, value} = self.props;
-    const classes = [isHint && "is-hint", hintMismatch && "is-hint-mismatch", "keyValue"];
+    const {isHint, hintMismatch, hintRequest, value} = self.props;
+    const classes = [
+      isHint && "is-hint",
+      hintMismatch && "is-hint-mismatch",
+      hintRequest && "is-hint-request",
+      "keyValue"
+    ];
     return <span className={classnames(classes)} onClick={onClick}>{value}</span>;
   };
 }, {displayName: 'KeyValue'});
@@ -214,7 +219,7 @@ export const View = actions => EpicComponent(self => {
           <div>
             {keyWithWord.map(function(keyValue, keyIndex) {
               return (
-                <KeyValue key={keyIndex} index={keyIndex} value={keyValue.value} isHint={keyValue.isHint} hintMismatch={keyValue.hintMismatch} onRequestHint={onShowHintRequest}/>
+                <KeyValue key={keyIndex} index={keyIndex} value={keyValue.value} isHint={keyValue.isHint} hintMismatch={keyValue.hintMismatch} hintRequest={hintRequest && (hintRequest.keyIndex === keyIndex)} onRequestHint={onShowHintRequest}/>
               );
             })}
           </div>
