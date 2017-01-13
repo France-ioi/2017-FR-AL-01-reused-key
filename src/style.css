@@ -4,6 +4,30 @@
     -webkit-user-select: none;
     -ms-user-select: none;
 }
+.text-bold {
+    font-weight: bold;
+}
+.taskWrapper {
+    position: relative;
+}
+.hintsDialog {
+  width: 50%;
+  max-width: 400px;
+  background: #f0f0f0;
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 5px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 1;
+}
+.hintsDialog button + button {
+    margin-left: 10px;
+}
+.keyTable {
+    margin-top: 20px;
+}
 .keyTable span {
     width: 20px;
     display: inline-block;
@@ -13,7 +37,22 @@
 .keyTable span button {
     padding: 0;
     width: 100%;
+    border: none;
 }
+.keyTable .keyValue {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.keyTable .keyValue.is-hint {
+    border: none;
+    cursor: default;
+    font-weight: bold;
+}
+.is-hint-mismatch {
+    background-color: #ff4444 !important;
+}
+
 .ciphersAndPlains {
     font-family: Lucida Console,Monaco,monospace;
     font-size: 18px;
@@ -46,8 +85,4 @@
     margin-left: -4px;
     border-left-color: transparent;
     width: 24px;
-}
-
-.is-hint-mismatch {
-    background-color: #ff4444 !important;
 }

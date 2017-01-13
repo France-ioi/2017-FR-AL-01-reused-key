@@ -30,7 +30,7 @@ export const KeyValue = EpicComponent(self => {
   };
   self.render = function () {
     const {isHint, hintMismatch, value} = self.props;
-    const classes = [isHint && "is-hint", hintMismatch && "is-hint-mismatch"];
+    const classes = [isHint && "is-hint", hintMismatch && "is-hint-mismatch", "keyValue"];
     return <span className={classnames(classes)} onClick={onClick}>{value}</span>;
   };
 }, {displayName: 'KeyValue'});
@@ -183,12 +183,20 @@ export const View = actions => EpicComponent(self => {
     const wordStartIndex = Math.max(0, Math.min(wordCharIndex, keyWithHints.length - plainWord.length));
     return (
       /* preventDefault is called because browsers default to a visual dragging of HTML elements */
-      <div onMouseMove={preventDefault}>
+      <div onMouseMove={preventDefault} className="taskWrapper">
+        <div>
+          <p className="text-bold">Obtenir un indice</p>
+          Cliquer sur un chiffre de la clé pour obtenir sa valeur.
+        </div>
         {hintRequest &&
-          <div>
-            <p>{"Obtenir un indice pour la position "}{hintRequest.keyIndex}{" ?"}</p>
-            <Button onClick={onRequestHint}>{"Oui"}</Button>
-            <Button onClick={onCloseHintRequest}>{"Non"}</Button>
+          <div className="hintsDialog">
+            <p><strong>Indice demandé : </strong>{"Valeur pour la position "}<strong>{hintRequest.keyIndex}</strong></p>
+            <p><strong>Coût : </strong> XXX</p>
+            <p><strong>Score disponible : </strong> XXX</p>
+            <p className="text-center">
+              <Button onClick={onRequestHint}>{"Valider"}</Button>
+              <Button onClick={onCloseHintRequest}>{"Annuler"}</Button>
+            </p>
           </div>}
         <div className="keyTable">
           <div>
