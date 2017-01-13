@@ -16,6 +16,7 @@ export default function* (deps) {
 
   // The 'requestHint' action is passed to the workspace's View.
   yield use('requestHint');
+  yield defineAction('showHintRequest', 'Hint.ShowRequest');
 
   /* Simple workspace interface: init, dump, load, update, View */
 
@@ -59,6 +60,17 @@ export default function* (deps) {
 
   yield include(WorkspaceBuilder({init, dump, load, update, View: View(deps)}));
 
+  // TODO: move to alkindi-task-lib, and hintRequest out of workspace
+  yield addReducer('showHintRequest', function (state, action) {
+    const {workspace} = state;
+    const {keyIndex} = action;
+    let hintRequest = null;
+    if (keyIndex !== false) {
+      hintRequest = {keyIndex};
+    }
+    return {...state, workspace: {...workspace, hintRequest}};
+  });
+
   /*
     Temporary reducer for local processing of hints during development.
     This will ultimately be provided by the WorkspaceBuilder.
@@ -72,7 +84,7 @@ export default function* (deps) {
      const {request} = action;
      full_task = grantHint(full_task, request);
      const task = getTask(full_task);
-     return {...state, task, full_task, workspace: update(task, state.workspace)};
+     return {...state, task, full_task, workspace: {...update(task, state.workspace), hintRequest: false}};
   });
 
   /*

@@ -148,9 +148,17 @@ export const View = actions => EpicComponent(self => {
     }
   };
 
-  const onRequestHint = function (keyIndex) {
+  const onShowHintRequest = function (keyIndex) {
     const request = {keyIndex};
-    self.props.dispatch({type: actions.requestHint, request});
+    self.props.dispatch({type: actions.showHintRequest, keyIndex});
+  };
+
+  const onCloseHintRequest = function () {
+    self.props.dispatch({type: actions.showHintRequest, keyIndex: false});
+  };
+
+  const onRequestHint = function () {
+    self.props.dispatch({type: actions.requestHint, request: self.props.workspace.hintRequest});
   };
 
   const onMouseUp = function() {
@@ -170,12 +178,18 @@ export const View = actions => EpicComponent(self => {
 
   self.render = function () {
     const {score, task, workspace, dispatch} = self.props;
-    const {keyWithHints, keyWithWord, wordCharIndex, wordCipherIndex} = workspace;
+    const {keyWithHints, keyWithWord, wordCharIndex, wordCipherIndex, hintRequest} = workspace;
     const {ciphers, plainWord} = task;
     const wordStartIndex = Math.max(0, Math.min(wordCharIndex, keyWithHints.length - plainWord.length));
     return (
       /* preventDefault is called because browsers default to a visual dragging of HTML elements */
       <div onMouseMove={preventDefault}>
+        {hintRequest &&
+          <div>
+            <p>{"Obtenir un indice pour la position "}{hintRequest.keyIndex}{" ?"}</p>
+            <Button onClick={onRequestHint}>{"Oui"}</Button>
+            <Button onClick={onCloseHintRequest}>{"Non"}</Button>
+          </div>}
         <div className="keyTable">
           <div>
             {keyWithHints.map(function(keyValue, keyIndex) {
@@ -192,7 +206,7 @@ export const View = actions => EpicComponent(self => {
           <div>
             {keyWithWord.map(function(keyValue, keyIndex) {
               return (
-                <KeyValue key={keyIndex} index={keyIndex} value={keyValue.value} isHint={keyValue.isHint} hintMismatch={keyValue.hintMismatch} onRequestHint={onRequestHint}/>
+                <KeyValue key={keyIndex} index={keyIndex} value={keyValue.value} isHint={keyValue.isHint} hintMismatch={keyValue.hintMismatch} onRequestHint={onShowHintRequest}/>
               );
             })}
           </div>
