@@ -10,6 +10,9 @@
 .taskWrapper {
     position: relative;
 }
+.taskInstructions {
+    padding-top: 30px;
+}
 .hintsDialog {
   width: 50%;
   max-width: 400px;
@@ -22,11 +25,14 @@
   right: 15px;
   z-index: 1;
 }
+.hintsDialog p {
+    margin-bottom: 5px;
+}
 .hintsDialog button + button {
     margin-left: 10px;
 }
 .keyTable {
-    margin-top: 20px;
+    margin-top: 60px;
 }
 .keyTable span {
     width: 20px;
@@ -47,6 +53,11 @@
 .keyTable .keyValue.is-hint {
     border: none;
     cursor: default;
+    font-weight: bold;
+}
+.keyTable .keyValue.is-hint-request {
+    background: #000;
+    color: #fff;
     font-weight: bold;
 }
 .is-hint-mismatch {

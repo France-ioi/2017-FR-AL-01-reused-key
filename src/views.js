@@ -189,7 +189,7 @@ export const View = actions => EpicComponent(self => {
     return (
       /* preventDefault is called because browsers default to a visual dragging of HTML elements */
       <div onMouseMove={preventDefault} className="taskWrapper">
-        <div>
+        <div className="taskInstructions">
           <p className="text-bold">Obtenir un indice</p>
           Cliquer sur un chiffre de la clé pour obtenir sa valeur.
         </div>
