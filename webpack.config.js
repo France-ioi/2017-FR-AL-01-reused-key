@@ -32,7 +32,7 @@ const config = module.exports = {
     ]
   },
   resolve: {
-    root: SRC,
+    root: path.resolve(__dirname, "node_modules"),
     extensions: ['', '.js']
   },
   plugins: [
