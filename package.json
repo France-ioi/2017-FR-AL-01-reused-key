@@ -2,7 +2,6 @@
   "name": "2017-fr-al-01-reused-key",
   "version": "1.0.0",
   "description": "Reused key alkindi task",
-  "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
     "build": "NODE_ENV=production webpack --progress --colors --display-modules",
