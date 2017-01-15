@@ -51,7 +51,7 @@ const config = module.exports = {
   ]
 };
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'production') {
   config.devtool = 'inline-source-map';
 } else {
   config.plugins.push(new webpack.optimize.UglifyJsPlugin({
