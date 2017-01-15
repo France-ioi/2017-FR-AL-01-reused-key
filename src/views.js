@@ -193,10 +193,15 @@ export const View = actions => EpicComponent(self => {
       /* preventDefault is called because browsers default to a visual dragging of HTML elements */
       <div onMouseMove={preventDefault} className="taskWrapper">
         <div className="taskInstructions">
+          <p className="text-bold">Pour vous aider, voici le mot à placer dans l'un des trois messages :</p>
+          <p>{renderWord()}</p>
+          <p>Vous pouvez cliquer à divers endroits des messages pour tenter de placer ce mot. La clé est alors modifiée automatiquement pour que cela corresponde à cette partie du message déchiffré, et vous pouvez voir l'effet sur les autres messages.</p>
           <p className="text-bold">Obtenir un indice</p>
-          Cliquer sur un chiffre de la clé pour obtenir sa valeur.
+          <p>Cliquez sur un élément de la clé pour pouvoir demander sa valeur comme un indice.</p>
+          <p className="text-bold">Modifier la clé</p>
+          <p>Cliquez sur les flèches au-dessus et en dessous des éléments de la clé pour modifier leur valeur. La version
+         déchiffrée avec cette clé s'affiche sous chacun des trois messages.</p>
         </div>
-        {renderWord()}
         {hintRequest &&
           <div className="hintsDialog">
             <p><strong>Indice demandé : </strong>{"Valeur pour la position "}<strong>{hintRequest.keyIndex}</strong></p>
