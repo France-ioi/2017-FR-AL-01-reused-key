@@ -1,8 +1,10 @@
 
 const words = require('./words');
+var seedrandom = require('seedrandom');
 
-module.exports = function () {
+module.exports = function (params, seed) {
   "use strict";
+  var rng = seedrandom(seed);
   // TODO choose ciphers and plain word.
   var minLength = words[0][0].length;
   var cipherLengths = [
@@ -21,7 +23,7 @@ module.exports = function () {
            cipher += " ";
         }
         var length = cipherLengths[iCipher][iWord];
-        var iChoice = Math.trunc(Math.random() * words[length - minLength].length);
+        var iChoice = Math.trunc(rng() * words[length - minLength].length);
         var word = words[length - minLength][iChoice];
         cipher += word;
         if (length == 7) {
@@ -30,11 +32,11 @@ module.exports = function () {
      }
      ciphers.push(cipher);
   }
-  var plainWord = allWords[Math.trunc(Math.random() * allWords.length)];
+  var plainWord = allWords[Math.trunc(rng() * allWords.length)];
 
   var secretKey = [];
   for (let iKey = 0; iKey < ciphers[0].length; iKey++) {
-     secretKey.push(Math.trunc(Math.random() * 26));
+     secretKey.push(Math.trunc(rng() * 26));
   }
 
   for (let iCipher = 0; iCipher < ciphers.length; iCipher++) {
