@@ -2,7 +2,7 @@
 const words = require('./words');
 
 module.exports = function () {
-
+  "use strict";
   // TODO choose ciphers and plain word.
   var minLength = words[0][0].length;
   var cipherLengths = [
