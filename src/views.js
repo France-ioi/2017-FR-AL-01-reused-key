@@ -42,19 +42,22 @@ export const KeyValue = EpicComponent(self => {
 
 
 // A cell containing an encrypted character.
-// props: cipherIndex, charIndex, onHover, className
+// props: cipherIndex, charIndex, onHover, onMouseDown, className
 export const CipherChar = EpicComponent(self => {
   function onHover() {
     self.props.onHover(self.props.cipherIndex, self.props.charIndex);
   }
+  function onMouseDown() {
+    self.props.onMouseDown(self.props.cipherIndex, self.props.charIndex);
+  }
   self.render = function () {
     const {className, value} = self.props;
-    return <span className={className} onMouseMove={onHover}>{value}</span>
+    return <span className={className} onMouseMove={onHover} onMouseDown={onMouseDown}>{value}</span>
   };
 }, {displayName: 'CipherChar'});
 
 // A cell containing a decrypted character.
-// props: cipherIndex, charIndex, onHover, className, hintMismatch.
+// props: cipherIndex, charIndex, onHover, onMouseDown, className, hintMismatch.
 export const PlainChar = EpicComponent(self => {
   function onHover() {
     self.props.onHover(self.props.cipherIndex, self.props.charIndex);
@@ -70,15 +73,15 @@ export const PlainChar = EpicComponent(self => {
 }, {displayName: 'PlainChar'});
 
 // A displayed cipher (table of cipher character cells).
-// props: value, index, onHover
+// props: value, index, onHover, onMouseDown
 export const Cipher = EpicComponent(self => {
   self.render = function () {
-    const {value, index, onHover} = self.props;
+    const {value, index, onHover, onMouseDown} = self.props;
     const cipherArray = value.split("");
     return (
       <div className="cipherTable">
         {cipherArray.map(function(charValue, charIndex) {
-          return <CipherChar key={charIndex} cipherIndex={index} charIndex={charIndex} value={charValue} onHover={onHover}/>
+          return <CipherChar key={charIndex} cipherIndex={index} charIndex={charIndex} value={charValue} onHover={onHover} onMouseDown={onMouseDown} />
         })}
       </div>
     );
@@ -240,7 +243,7 @@ export const View = actions => EpicComponent(self => {
           {ciphers.map(function(cipherValue, cipherIndex) {
             return (
               <div key={cipherIndex} onMouseLeave={onMouseLeave}>
-                <Cipher index={cipherIndex} value={cipherValue} onHover={onHover} />
+                <Cipher index={cipherIndex} value={cipherValue} onHover={onHover} onMouseDown={onMouseDown} />
                 <Plain cipherIndex={cipherIndex} cipherValue={cipherValue} keyWithWord={keyWithWord} wordCharIndex={wordCharIndex} wordCipherIndex={wordCipherIndex} plainWord={plainWord} onMouseDown={onMouseDown} onHover={onHover} />
               </div>
             );
