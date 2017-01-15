@@ -1,10 +1,11 @@
 
 const words = require('./words');
-var seedrandom = require('seedrandom');
+const seedrandom = require('seedrandom');
 
-module.exports = function (params, seed) {
-  "use strict";
-  var rng = seedrandom(seed);
+module.exports = generate;
+
+function generate (params, seed, callback) {
+  const rng = seedrandom(seed);
   // TODO choose ciphers and plain word.
   var minLength = words[0][0].length;
   var cipherLengths = [
@@ -57,6 +58,6 @@ module.exports = function (params, seed) {
   var task = {ciphers, plainWord, hints: {}};
   var full_task = Object.assign({secretKey: secretKey}, task);
 
-  return {task, full_task};
+  callback(null, {task, full_task});
 
 };
