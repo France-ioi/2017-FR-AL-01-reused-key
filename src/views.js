@@ -263,19 +263,15 @@ export const View = actions => EpicComponent(self => {
     const {plainWord} = task;
     const {wordCipherIndex} = workspace;
     return (
-      <div className="topPlainWord">
-        {plainWord}
+      <div className="topPlainWordContainer">
+        <span className="topPlainWord">{plainWord}</span>
         {(wordCipherIndex !== null) && renderDelete()}
       </div>
     );
   };
 
   const renderDelete = function() {
-    return (
-      <div className="deleteWordContainer">
-        <a onClick={clickDeleteWord}>Delete</a>
-      </div>
-    );
+    return <Button className="deleteWordContainer" onClick={clickDeleteWord}>Effacer <i className="fa fa-times" aria-hidden="true"></i></Button>;
   };
 
 }, {displayName: 'View'});

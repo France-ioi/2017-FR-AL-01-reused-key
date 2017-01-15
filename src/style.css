@@ -13,6 +13,22 @@
 .taskInstructions {
     padding-top: 30px;
 }
+.topPlainWordContainer {
+    margin-top: 20px;
+    height: 34px;
+}
+.topPlainWord {
+    font-family: Lucida Console,Monaco,monospace;
+    font-size: 18px;
+    display: inline-block;
+    margin-right: 20px;
+    background-color: #fff;
+    border: 1px solid #777;
+    box-shadow: 3px 2px 3px #ccc;
+    line-height: 27px;
+    letter-spacing: 10px;
+    padding-left: 5px;
+}
 .hintsDialog {
   width: 50%;
   max-width: 400px;
@@ -32,7 +48,7 @@
     margin-left: 10px;
 }
 .keyTable {
-    margin-top: 60px;
+    margin-top: 10px;
 }
 .keyTable span {
     width: 20px;
