@@ -196,6 +196,7 @@ export const View = actions => EpicComponent(self => {
           <p className="text-bold">Obtenir un indice</p>
           Cliquer sur un chiffre de la clé pour obtenir sa valeur.
         </div>
+        {renderWord()}
         {hintRequest &&
           <div className="hintsDialog">
             <p><strong>Indice demandé : </strong>{"Valeur pour la position "}<strong>{hintRequest.keyIndex}</strong></p>
@@ -249,6 +250,30 @@ export const View = actions => EpicComponent(self => {
             );
           })}
         </div>
+      </div>
+    );
+  };
+
+  const clickDeleteWord = function() {
+    self.props.dispatch({type: actions.setPlainWordPosition, cipherIndex: null, charIndex: 0});
+  };
+
+  const renderWord = function() {
+    const {task, workspace} = self.props;
+    const {plainWord} = task;
+    const {wordCipherIndex} = workspace;
+    return (
+      <div className="topPlainWord">
+        {plainWord}
+        {(wordCipherIndex !== null) && renderDelete()}
+      </div>
+    );
+  };
+
+  const renderDelete = function() {
+    return (
+      <div className="deleteWordContainer">
+        <a onClick={clickDeleteWord}>Delete</a>
       </div>
     );
   };
