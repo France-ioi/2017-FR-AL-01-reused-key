@@ -215,7 +215,7 @@ export const View = actions => EpicComponent(self => {
         <div className="taskInstructions">
           {plainWord &&
             <div>
-              <p className="text-bold">Pour vous aider, voici le mot à placer dans l'un des trois messages :</p>
+              <p className="text-bold">Pour vous aider, voici le mot à placer dans l'un des quatre messages :</p>
               <div>{renderWord()}</div>
               <p>Vous pouvez cliquer à divers endroits des messages pour tenter de placer ce mot. La clé est alors modifiée automatiquement pour que cela corresponde à cette partie du message déchiffré, et vous pouvez voir l'effet sur les autres messages.</p>
             </div>}
