@@ -28,16 +28,16 @@ function gradeAnswer (full_task, task, answer, callback) {
   });
 }
 
-function grantHint (full_task, task, query) {
+function grantHint (full_task, task, query, callback) {
   const {keyIndex} = query;
   const {secretKey} = full_task;
   if (typeof keyIndex !== 'number' || keyIndex < 0 || keyIndex >= secretKey.length) {
-    return {success: false};
+    callback(null, {success: false});
   }
   // Update task in-place is it is freshly loaded JSON.
   task.hints[keyIndex] = secretKey[keyIndex];
   task.highestPossibleScore = getHighestPossibleScore(task.hints);
-  return {success: true, task: task};
+  callback(null, {success: true, task: task});
 };
 
 function getHighestPossibleScore (hints) {
