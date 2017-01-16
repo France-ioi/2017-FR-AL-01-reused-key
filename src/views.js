@@ -196,7 +196,7 @@ export const View = actions => EpicComponent(self => {
   };
 
   self.render = function () {
-    const {score, task, workspace, dispatch} = self.props;
+    const {task, workspace, score, feedback} = self.props;
     const {keyWithHints, keyWithWord, wordCharIndex, wordCipherIndex, hintRequest} = workspace;
     const {ciphers, plainWord} = task;
     const wordStartIndex = plainWord ? Math.max(0, Math.min(wordCharIndex, keyWithHints.length - plainWord.length)) : -1;
@@ -204,7 +204,14 @@ export const View = actions => EpicComponent(self => {
       /* preventDefault is called because browsers default to a visual dragging of HTML elements */
       <div onMouseMove={preventDefault} className="taskWrapper">
         <div>
-          <Button onClick={onSubmitAnswer}>{"soumettre la clé"}</Button>
+          <Button onClick={onSubmitAnswer}>
+            {"soumettre la clé"}
+          </Button>
+          <div>
+            {"Score : "}{score}
+            {feedback === true && <i className="fa fa-check" style={{color: 'green'}}/>}
+            {feedback === false && <i className="fa fa-close" style={{color: 'red'}}/>}
+          </div>
         </div>
         <div className="taskInstructions">
           {plainWord &&
