@@ -15,7 +15,7 @@ export default function* (deps) {
   yield defineAction('setPlainWordPosition', 'Workspace.SetPlainWordPosition');
 
   // The 'requestHint' action is passed to the workspace's View.
-  yield use('requestHint');
+  yield use('requestHint', 'submitAnswer');
   yield defineAction('showHintRequest', 'Hint.ShowRequest');
 
   /* Simple workspace interface: init, dump, load, update, View */

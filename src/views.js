@@ -176,6 +176,12 @@ export const View = actions => EpicComponent(self => {
     }
   };
 
+  const onSubmitAnswer = function () {
+    const answer = {key: self.props.workspace.keyWithWord.map(c => c.value)};
+    console.log('answer', answer);
+    self.props.dispatch({type: actions.submitAnswer, answer});
+  };
+
   const clickDeleteWord = function() {
     self.props.dispatch({type: actions.setPlainWordPosition, cipherIndex: null, charIndex: 0});
   };
@@ -196,6 +202,9 @@ export const View = actions => EpicComponent(self => {
     return (
       /* preventDefault is called because browsers default to a visual dragging of HTML elements */
       <div onMouseMove={preventDefault} className="taskWrapper">
+        <div>
+          <Button onClick={onSubmitAnswer}>{"soumettre la clé"}</Button>
+        </div>
         <div className="taskInstructions">
           <p className="text-bold">Pour vous aider, voici le mot à placer dans l'un des trois messages :</p>
           <div>{renderWord()}</div>
