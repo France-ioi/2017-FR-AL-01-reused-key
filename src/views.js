@@ -183,7 +183,7 @@ export const View = actions => EpicComponent(self => {
     self.props.dispatch({type: actions.submitAnswer, answer});
   };
 
-  const clickDeleteWord = function() {
+  const clickDeleteWord = function () {
     self.props.dispatch({type: actions.setPlainWordPosition, cipherIndex: null, charIndex: 0});
   };
 
