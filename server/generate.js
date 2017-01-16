@@ -62,5 +62,4 @@ function generate (params, seed, callback) {
   const full_task = Object.assign({secretKey}, task);
 
   callback(null, {task, full_task});
-
 };
