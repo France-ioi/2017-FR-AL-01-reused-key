@@ -202,14 +202,31 @@ export const View = actions => EpicComponent(self => {
     return (
       /* preventDefault is called because browsers default to a visual dragging of HTML elements */
       <div onMouseMove={preventDefault} className="taskWrapper">
-        <div>
-          <Button onClick={onSubmitAnswer}>
-            {"soumettre la clé"}
-          </Button>
-          <div>
-            {"Score : "}{score}
-            {feedback === true && <i className="fa fa-check" style={{color: 'green'}}/>}
-            {feedback === false && <i className="fa fa-close" style={{color: 'red'}}/>}
+        <div className="taskHeader">
+          <div className="submitBlock">
+            <Button onClick={onSubmitAnswer}>
+              {"soumettre la clé"}
+            </Button>
+          </div>
+          <div className="scoreBlock">
+            {"Score : "}{score === undefined ? '-' : score}
+          </div>
+          <div className="feedbackBlock">
+            {feedback === true &&
+              <span>
+                <i className="fa fa-check" style={{color: 'green'}}/>
+                {" Votre réponse est correcte."}
+              </span>}
+            {feedback === false &&
+              <span>
+                <i className="fa fa-close" style={{color: 'red'}}/>
+                {" Votre réponse est incorrecte."}
+              </span>}
+            {feedback === 'too soon' &&
+              <span>
+                <i className="fa fa-hand-stop-o" style={{color: 'red'}}/>
+                {" Soumission rejetée : trop de soumissions en moins d'une minute."}
+              </span>}
           </div>
         </div>
         <div className="taskInstructions">

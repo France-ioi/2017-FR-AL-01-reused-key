@@ -126,3 +126,18 @@
     border-left-color: transparent;
     width: 24px;
 }
+
+.taskHeader {
+
+}
+.submitBlock, .scoreBlock, .feedbackBlock {
+    display: inline-block;
+    line-height: 34px;
+}
+.scoreBlock {
+    margin: 0 10px;
+}
+.scoreBlock, .feedbackBlock {
+    background: #f8f8f8;
+    padding: 0 8px;
+}
