@@ -14,9 +14,9 @@ export default function* (deps) {
   yield defineAction('keyChange', 'Workspace.KeyChange');
   yield defineAction('setPlainWordPosition', 'Workspace.SetPlainWordPosition');
 
-  // The 'requestHint' action is passed to the workspace's View.
-  yield use('requestHint', 'submitAnswer');
-  yield defineAction('showHintRequest', 'Hint.ShowRequest');
+  /* These action types provided by alkindi-task-lib are passed to the
+     workspace's View. */
+  yield use('showHintRequest', 'requestHint', 'submitAnswer');
 
   /* Simple workspace interface: init, dump, load, update, View */
 
@@ -59,33 +59,6 @@ export default function* (deps) {
   };
 
   yield include(WorkspaceBuilder({init, dump, load, update, View: View(deps)}));
-
-  // TODO: move to alkindi-task-lib, and hintRequest out of workspace
-  yield addReducer('showHintRequest', function (state, action) {
-    const {workspace} = state;
-    const {keyIndex} = action;
-    let hintRequest = null;
-    if (keyIndex !== false) {
-      hintRequest = {keyIndex};
-    }
-    return {...state, workspace: {...workspace, hintRequest}};
-  });
-
-  /*
-    Temporary reducer for local processing of hints during development.
-    This will ultimately be provided by the WorkspaceBuilder.
-  */
-  yield addReducer('requestHint', function (state, action) {
-     // Process the hint request locally only if full_task is available.
-     let {full_task} = state;
-     if (!full_task) {
-        return state;
-     }
-     const {request} = action;
-     full_task = grantHint(full_task, request);
-     const task = getTask(full_task);
-     return {...state, task, full_task, workspace: {...update(task, state.workspace), hintRequest: false}};
-  });
 
   /*
     Add reducers for workspace actions and any needed sagas below:

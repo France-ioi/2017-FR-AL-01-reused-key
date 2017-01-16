@@ -158,16 +158,15 @@ export const View = actions => EpicComponent(self => {
   };
 
   const onShowHintRequest = function (keyIndex) {
-    const request = {keyIndex};
-    self.props.dispatch({type: actions.showHintRequest, keyIndex});
+    self.props.dispatch({type: actions.showHintRequest, request: {keyIndex}});
   };
 
   const onCloseHintRequest = function () {
-    self.props.dispatch({type: actions.showHintRequest, keyIndex: false});
+    self.props.dispatch({type: actions.showHintRequest, request: null});
   };
 
   const onRequestHint = function () {
-    self.props.dispatch({type: actions.requestHint, request: self.props.workspace.hintRequest});
+    self.props.dispatch({type: actions.requestHint, request: self.props.hintRequest});
   };
 
   const onMouseUp = function() {
@@ -195,10 +194,14 @@ export const View = actions => EpicComponent(self => {
   };
 
   self.render = function () {
-    const {task, workspace, score, feedback} = self.props;
-    const {keyWithHints, keyWithWord, wordCharIndex, wordCipherIndex, hintRequest} = workspace;
+    const {task, workspace, score, feedback, hintRequest} = self.props;
+    const {keyWithWord, wordCharIndex, wordCipherIndex} = workspace;
     const {ciphers, plainWord} = task;
-    const wordStartIndex = plainWord ? Math.max(0, Math.min(wordCharIndex, keyWithHints.length - plainWord.length)) : -1;
+    const maximumScore = 100;
+    const allowHints = true;
+    const hintCost = 10;
+    const highestPossibleScore = Math.max(0, maximumScore - Object.keys(task.hints).length * hintCost);
+    const wordStartIndex = plainWord ? Math.max(0, Math.min(wordCharIndex, keyWithWord.length - plainWord.length)) : -1;
     return (
       /* preventDefault is called because browsers default to a visual dragging of HTML elements */
       <div onMouseMove={preventDefault} className="taskWrapper">
@@ -242,18 +245,18 @@ export const View = actions => EpicComponent(self => {
           <p>Cliquez sur les flèches au-dessus et en dessous des éléments de la clé pour modifier leur valeur. La version
          déchiffrée avec cette clé s'affiche sous chacun des quatre messages.</p>
         </div>
-        {hintRequest &&
+        {!allowHints && hintRequest &&
           <div className="hintsDialog">
             <p><strong>{"Les indices seront bientôt disponibles."}</strong></p>
             <p className="text-center">
               <Button onClick={onCloseHintRequest}>{"Annuler"}</Button>
             </p>
           </div>}
-        {false &&
+        {allowHints && hintRequest &&
           <div className="hintsDialog">
-            <p><strong>Indice demandé : </strong>{"Valeur pour la position "}<strong>{hintRequest.keyIndex}</strong></p>
-            <p><strong>Coût : </strong> XXX</p>
-            <p><strong>Score disponible : </strong> XXX</p>
+            <p><strong>{"Indice demandé : "}</strong>{"Valeur pour la position "}<strong>{hintRequest.keyIndex}</strong></p>
+            <p><strong>{"Coût : "}</strong> {hintCost}</p>
+            <p><strong>{"Score disponible : "}</strong>{highestPossibleScore}{' → '}{highestPossibleScore - hintCost}</p>
             <p className="text-center">
               <Button onClick={onRequestHint}>{"Valider"}</Button>
               <Button onClick={onCloseHintRequest}>{"Annuler"}</Button>
@@ -261,15 +264,16 @@ export const View = actions => EpicComponent(self => {
           </div>}
         <div className="keyTable">
           <div>
-            {keyWithHints.map(function(keyValue, keyIndex) {
-              if(wordCipherIndex !== null && keyIndex >= wordStartIndex && keyIndex < wordStartIndex + plainWord.length) {
+            {keyWithWord.map(function(keyValue, keyIndex) {
+              if (keyValue.inWord) {
                 return <span key={keyIndex}></span>;
+              } else {
+                return (
+                  <span key={keyIndex}>
+                    {keyValue.isHint || <KeyButton index={keyIndex} direction="1" onChange={onKeyChange} />}
+                  </span>
+                );
               }
-              return (
-                <span key={keyIndex}>
-                  {keyValue.isHint || <KeyButton index={keyIndex} direction="1" onChange={onKeyChange} />}
-                </span>
-              );
             })}
           </div>
           <div>
@@ -280,15 +284,16 @@ export const View = actions => EpicComponent(self => {
             })}
           </div>
           <div>
-            {keyWithHints.map(function(keyValue, keyIndex) {
-              if(wordCipherIndex !== null && keyIndex >= wordStartIndex && keyIndex < wordStartIndex + plainWord.length) {
+            {keyWithWord.map(function(keyValue, keyIndex) {
+              if (keyValue.inWord) {
                 return <span key={keyIndex}></span>;
+              } else {
+                return (
+                  <span key={keyIndex}>
+                    {keyValue.isHint || <KeyButton index={keyIndex} direction="-1" onChange={onKeyChange} />}
+                  </span>
+                );
               }
-              return (
-                <span key={keyIndex}>
-                  {keyValue.isHint || <KeyButton index={keyIndex} direction="-1" onChange={onKeyChange} />}
-                </span>
-              );
             })}
           </div>
         </div>
