@@ -84,4 +84,12 @@ export const Task2 = EpicComponent(self => {
   }
 });
 
-export default Task1;
+export default EpicComponent(self => {
+  self.render = function () {
+    const {task} = self.props;
+    if (task.version == 1) {
+      return <Task1 task={task}/>;
+    }
+    return <Task2 task={task}/>;
+  }
+});
