@@ -54,8 +54,12 @@ function generate (params, seed, callback) {
      ciphers[iCipher] = newCipher;
   }
   // TODO hints.
-  var task = {ciphers, plainWord, hints: {}};
-  var full_task = Object.assign({secretKey: secretKey}, task);
+  const {version} = params;
+  const task = {version, ciphers, hints: {}};
+  if (version == 1) {
+    task.plainWord = plainWord;
+  }
+  const full_task = Object.assign({secretKey}, task);
 
   callback(null, {task, full_task});
 
