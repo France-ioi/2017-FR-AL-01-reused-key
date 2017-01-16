@@ -194,7 +194,7 @@ export const View = actions => EpicComponent(self => {
       <div onMouseMove={preventDefault} className="taskWrapper">
         <div className="taskInstructions">
           <p className="text-bold">Pour vous aider, voici le mot à placer dans l'un des trois messages :</p>
-          <p>{renderWord()}</p>
+          <div>{renderWord()}</div>
           <p>Vous pouvez cliquer à divers endroits des messages pour tenter de placer ce mot. La clé est alors modifiée automatiquement pour que cela corresponde à cette partie du message déchiffré, et vous pouvez voir l'effet sur les autres messages.</p>
           <p className="text-bold">Obtenir un indice</p>
           <p>Cliquez sur un élément de la clé pour pouvoir demander sa valeur comme un indice.</p>
