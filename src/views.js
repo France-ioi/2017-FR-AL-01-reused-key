@@ -139,7 +139,7 @@ export const View = actions => EpicComponent(self => {
   };
 
   const onMouseDown = function (cipherIndex, charIndex) {
-    if (!self.props.plainWord) return;
+    if (!self.props.task.plainWord) return;
     self.setState({dragging: true, dropOutside: false});
     self.props.dispatch({type: actions.setPlainWordPosition, cipherIndex, charIndex});
   };
