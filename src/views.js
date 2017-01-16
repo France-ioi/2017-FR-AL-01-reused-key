@@ -96,7 +96,7 @@ export const Plain = EpicComponent(self => {
     const {cipherValue, wordCharIndex, wordCipherIndex, keyWithWord, cipherIndex, plainWord, onMouseDown, onHover} = self.props;
     const plainArray = decrypt(cipherValue, keyWithWord).split("");
     let startIndex;
-    if(wordCipherIndex === cipherIndex) {
+    if (plainWord && wordCipherIndex === cipherIndex) {
       startIndex = Math.max(0, Math.min(wordCharIndex, cipherValue.length - plainWord.length));
       for(let index = startIndex; index < startIndex + plainWord.length; index++) {
         plainArray[index] = plainWord[index - startIndex];
@@ -119,7 +119,7 @@ export const Plain = EpicComponent(self => {
     wordCipherIndex: React.PropTypes.number,
     keyWithWord: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
     cipherIndex: React.PropTypes.number.isRequired,
-    plainWord: React.PropTypes.string.isRequired,
+    plainWord: React.PropTypes.string,
     onHover: React.PropTypes.func.isRequired,
     onMouseDown: React.PropTypes.func.isRequired
   }
@@ -139,6 +139,7 @@ export const View = actions => EpicComponent(self => {
   };
 
   const onMouseDown = function (cipherIndex, charIndex) {
+    if (!self.props.plainWord) return;
     self.setState({dragging: true, dropOutside: false});
     self.props.dispatch({type: actions.setPlainWordPosition, cipherIndex, charIndex});
   };
@@ -198,7 +199,7 @@ export const View = actions => EpicComponent(self => {
     const {score, task, workspace, dispatch} = self.props;
     const {keyWithHints, keyWithWord, wordCharIndex, wordCipherIndex, hintRequest} = workspace;
     const {ciphers, plainWord} = task;
-    const wordStartIndex = Math.max(0, Math.min(wordCharIndex, keyWithHints.length - plainWord.length));
+    const wordStartIndex = plainWord ? Math.max(0, Math.min(wordCharIndex, keyWithHints.length - plainWord.length)) : -1;
     return (
       /* preventDefault is called because browsers default to a visual dragging of HTML elements */
       <div onMouseMove={preventDefault} className="taskWrapper">
@@ -206,9 +207,12 @@ export const View = actions => EpicComponent(self => {
           <Button onClick={onSubmitAnswer}>{"soumettre la clé"}</Button>
         </div>
         <div className="taskInstructions">
-          <p className="text-bold">Pour vous aider, voici le mot à placer dans l'un des trois messages :</p>
-          <div>{renderWord()}</div>
-          <p>Vous pouvez cliquer à divers endroits des messages pour tenter de placer ce mot. La clé est alors modifiée automatiquement pour que cela corresponde à cette partie du message déchiffré, et vous pouvez voir l'effet sur les autres messages.</p>
+          {plainWord &&
+            <div>
+              <p className="text-bold">Pour vous aider, voici le mot à placer dans l'un des trois messages :</p>}
+              <div>{renderWord()}</div>
+              <p>Vous pouvez cliquer à divers endroits des messages pour tenter de placer ce mot. La clé est alors modifiée automatiquement pour que cela corresponde à cette partie du message déchiffré, et vous pouvez voir l'effet sur les autres messages.</p>
+            </div>}
           <p className="text-bold">Obtenir un indice</p>
           <p>Cliquez sur un élément de la clé pour pouvoir demander sa valeur comme un indice.</p>
           <p className="text-bold">Modifier la clé</p>
