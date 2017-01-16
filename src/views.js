@@ -179,7 +179,6 @@ export const View = actions => EpicComponent(self => {
 
   const onSubmitAnswer = function () {
     const answer = {key: self.props.workspace.keyWithWord.map(c => c.value)};
-    console.log('answer', answer);
     self.props.dispatch({type: actions.submitAnswer, answer});
   };
 
