@@ -116,4 +116,5 @@ export default function* (deps) {
     workspace = update(state.task, {...workspace, wordCharIndex: charIndex, wordCipherIndex: cipherIndex});
     return {...state, workspace};
   });
+
 };
