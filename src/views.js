@@ -244,6 +244,13 @@ export const View = actions => EpicComponent(self => {
         </div>
         {hintRequest &&
           <div className="hintsDialog">
+            <p><strong>{"Les indices seront bientôt disponibles."}</strong></p>
+            <p className="text-center">
+              <Button onClick={onCloseHintRequest}>{"Annuler"}</Button>
+            </p>
+          </div>}
+        {false &&
+          <div className="hintsDialog">
             <p><strong>Indice demandé : </strong>{"Valeur pour la position "}<strong>{hintRequest.keyIndex}</strong></p>
             <p><strong>Coût : </strong> XXX</p>
             <p><strong>Score disponible : </strong> XXX</p>
