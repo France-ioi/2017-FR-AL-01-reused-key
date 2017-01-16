@@ -16,7 +16,7 @@ function generate (params, seed, callback) {
   ];
 
   var ciphers = [];
-  var allWords = [];
+  var plainWord = "";
   for (var iCipher = 0; iCipher < cipherLengths.length; iCipher++) {
      var cipher = "";
      for (var iWord = 0; iWord < cipherLengths[iCipher].length; iWord++) {
@@ -27,13 +27,12 @@ function generate (params, seed, callback) {
         var iChoice = Math.trunc(rng() * words[length - minLength].length);
         var word = words[length - minLength][iChoice];
         cipher += word;
-        if (length == 7) {
-           allWords.push(word);
+        if ((iCipher == 0) && (iWord == cipherLengths[iCipher].length - 1)) {
+           plainWord = word;
         }
      }
      ciphers.push(cipher);
   }
-  var plainWord = allWords[Math.trunc(rng() * allWords.length)];
 
   var secretKey = [];
   for (let iKey = 0; iKey < ciphers[0].length; iKey++) {
