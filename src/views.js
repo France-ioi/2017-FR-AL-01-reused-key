@@ -223,7 +223,7 @@ export const View = actions => EpicComponent(self => {
           <p>Cliquez sur un élément de la clé pour pouvoir demander sa valeur comme un indice.</p>
           <p className="text-bold">Modifier la clé</p>
           <p>Cliquez sur les flèches au-dessus et en dessous des éléments de la clé pour modifier leur valeur. La version
-         déchiffrée avec cette clé s'affiche sous chacun des trois messages.</p>
+         déchiffrée avec cette clé s'affiche sous chacun des quatre messages.</p>
         </div>
         {hintRequest &&
           <div className="hintsDialog">
