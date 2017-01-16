@@ -176,6 +176,10 @@ export const View = actions => EpicComponent(self => {
     }
   };
 
+  const clickDeleteWord = function() {
+    self.props.dispatch({type: actions.setPlainWordPosition, cipherIndex: null, charIndex: 0});
+  };
+
   self.componentDidMount = function () {
     document.addEventListener('mouseup', onMouseUp);
   };
@@ -257,10 +261,6 @@ export const View = actions => EpicComponent(self => {
         </div>
       </div>
     );
-  };
-
-  const clickDeleteWord = function() {
-    self.props.dispatch({type: actions.setPlainWordPosition, cipherIndex: null, charIndex: 0});
   };
 
   const renderWord = function() {
