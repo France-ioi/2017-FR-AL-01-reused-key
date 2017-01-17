@@ -197,10 +197,6 @@ export const View = actions => EpicComponent(self => {
     const {task, workspace, score, feedback, hintRequest} = self.props;
     const {keyWithWord, wordCharIndex, wordCipherIndex} = workspace;
     const {ciphers, plainWord} = task;
-    const maximumScore = 100;
-    const allowHints = true;
-    const hintCost = 10;
-    const highestPossibleScore = Math.max(0, maximumScore - Object.keys(task.hints).length * hintCost);
     const wordStartIndex = plainWord ? Math.max(0, Math.min(wordCharIndex, keyWithWord.length - plainWord.length)) : -1;
     return (
       /* preventDefault is called because browsers default to a visual dragging of HTML elements */
@@ -244,24 +240,8 @@ export const View = actions => EpicComponent(self => {
           <p className="text-bold">Modifier la clé</p>
           <p>Cliquez sur les flèches au-dessus et en dessous des éléments de la clé pour modifier leur valeur. La version
          déchiffrée avec cette clé s'affiche sous chacun des quatre messages.</p>
+          {hintRequest && renderHintRequest()}
         </div>
-        {!allowHints && hintRequest &&
-          <div className="hintsDialog">
-            <p><strong>{"Les indices seront bientôt disponibles."}</strong></p>
-            <p className="text-center">
-              <Button onClick={onCloseHintRequest}>{"Annuler"}</Button>
-            </p>
-          </div>}
-        {allowHints && hintRequest &&
-          <div className="hintsDialog">
-            <p><strong>{"Indice demandé : "}</strong>{"Valeur pour la position "}<strong>{hintRequest.keyIndex}</strong></p>
-            <p><strong>{"Coût : "}</strong> {hintCost}</p>
-            <p><strong>{"Score disponible : "}</strong>{highestPossibleScore}{' → '}{highestPossibleScore - hintCost}</p>
-            <p className="text-center">
-              <Button onClick={onRequestHint}>{"Valider"}</Button>
-              <Button onClick={onCloseHintRequest}>{"Annuler"}</Button>
-            </p>
-          </div>}
         <div className="keyTable">
           <div>
             {keyWithWord.map(function(keyValue, keyIndex) {
@@ -310,6 +290,33 @@ export const View = actions => EpicComponent(self => {
       </div>
     );
   };
+
+  function renderHintRequest () {
+    const allowHints = true;
+    if (!allowHints) {
+      <div className="hintsDialog">
+        <p><strong>{"Les indices seront bientôt disponibles."}</strong></p>
+        <p className="text-center">
+          <Button onClick={onCloseHintRequest}>{"Annuler"}</Button>
+        </p>
+      </div>
+    }
+    const maximumScore = 100;
+    const hintCost = 10;
+    const {task, hintRequest} = self.props;
+    const highestPossibleScore = Math.max(0, maximumScore - Object.keys(task.hints).length * hintCost);
+    return (
+      <div className="hintsDialog">
+        <p><strong>{"Indice demandé : "}</strong>{"Valeur pour la position "}<strong>{hintRequest.keyIndex}</strong></p>
+        <p><strong>{"Coût : "}</strong> {hintCost}</p>
+        <p><strong>{"Score disponible : "}</strong>{highestPossibleScore}</p>
+        <p className="text-center">
+          <Button onClick={onRequestHint}>{"Valider"}</Button>
+          <Button onClick={onCloseHintRequest}>{"Annuler"}</Button>
+        </p>
+      </div>
+    );
+  }
 
   const renderWord = function() {
     const {task, workspace} = self.props;

@@ -20,11 +20,9 @@
 .text-bold {
     font-weight: bold;
 }
-.taskWrapper {
-    position: relative;
-}
 .taskWrapper .taskInstructions {
     padding-top: 30px;
+    position: relative;
 }
 .topPlainWordContainer {
     margin: 10px 20px;
@@ -50,7 +48,7 @@
   border-radius: 3px;
   padding: 5px;
   position: absolute;
-  top: 15px;
+  bottom: 15px;
   right: 15px;
   z-index: 1;
 }
