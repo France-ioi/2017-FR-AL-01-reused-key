@@ -301,8 +301,8 @@ export const View = actions => EpicComponent(self => {
         </p>
       </div>
     }
-    const maximumScore = 100;
-    const hintCost = 10;
+    const maximumScore = 150;
+    const hintCost = 20;
     const {task, hintRequest} = self.props;
     const highestPossibleScore = Math.max(0, maximumScore - Object.keys(task.hints).length * hintCost);
     return (

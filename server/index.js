@@ -42,5 +42,5 @@ function grantHint (full_task, task, query, callback) {
 
 function getHighestPossibleScore (hints) {
   const nHints = Object.keys(hints).length;
-  return Math.max(0, 100 - nHints * 10);
+  return Math.max(0, 150 - nHints * 20);
 }
