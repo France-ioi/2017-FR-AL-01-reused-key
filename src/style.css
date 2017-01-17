@@ -128,14 +128,18 @@
 .taskHeader {
 
 }
-.submitBlock, .scoreBlock, .feedbackBlock {
+.submitBlock, .scoreBlock, .feedbackBlock, .saveBlock {
     display: inline-block;
     line-height: 34px;
+    margin: 0 10px 0 0;
 }
-.scoreBlock {
-    margin: 0 10px;
+.taskHeader > *:last-child {
+    margin: 0;
 }
 .scoreBlock, .feedbackBlock {
     background: #f8f8f8;
     padding: 0 8px;
+}
+.feedbackBlock {
+    cursor: pointer;
 }
