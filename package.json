@@ -30,7 +30,7 @@
     "webpack-dev-middleware": "^1.9.0"
   },
   "dependencies": {
-    "alkindi-task-lib": "^5.0.0",
+    "alkindi-task-lib": "^6.0.0",
     "bootstrap": "^3.3.7",
     "classnames": "^2.2.5",
     "epic-component": "^1.1.2",
