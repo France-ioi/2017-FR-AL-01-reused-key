@@ -15,7 +15,7 @@ export function run (container, options) {
    runTask(container, options, TaskBundle);
 };
 
-function* TaskBundle (deps) {
+function TaskBundle (bundle, deps) {
 
   /*** Start of required task definitions ***/
 
@@ -28,19 +28,19 @@ function* TaskBundle (deps) {
   };
 
   /* The 'init' action sets the workspace operations in the global state. */
-  yield addReducer('init', function (state, action) {
+  bundle.addReducer('init', function (state, action) {
     return {...state, workspaceOperations};
   });
 
   /* The 'Task' view displays the task introduction to the contestant. */
-  yield defineView('Task', TaskSelector, Task);
+  bundle.defineView('Task', TaskSelector, Task);
   function TaskSelector (state) {
     const {task} = state;
     return {task};
   }
 
   /* The 'Workspace' view displays the main task view to the contestant. */
-  yield defineView('Workspace', WorkspaceSelector, Workspace(deps));
+  bundle.defineView('Workspace', WorkspaceSelector, Workspace(deps));
   function WorkspaceSelector (state, props) {
     const {score, task, workspace, hintRequest, submitAnswer} = state;
     return {score, task, workspace, hintRequest, submitAnswer: submitAnswer || {}};
@@ -49,7 +49,7 @@ function* TaskBundle (deps) {
   /*** End of required task definitions ***/
 
   /* These are passed to WorkspaceView. */
-  yield use('showHintRequest', 'requestHint', 'submitAnswer', 'SaveButton', 'dismissAnswerFeedback');
+  bundle.use('showHintRequest', 'requestHint', 'submitAnswer', 'SaveButton', 'dismissAnswerFeedback');
 
   /* taskInitialized is called to update the global state when the task is first loaded. */
   function taskLoaded (state) {
@@ -89,8 +89,8 @@ function* TaskBundle (deps) {
 
   /* keyChange {index, direction} updates the key by incrementing/decrementing
      a value in the key. */
-  yield defineAction('keyChange', 'Workspace.KeyChange');
-  yield addReducer('keyChange', function keyChangeReducer (state, action) {
+  bundle.defineAction('keyChange', 'Workspace.KeyChange');
+  bundle.addReducer('keyChange', function keyChangeReducer (state, action) {
     const {index, direction} = action;
     let {workspace, task} = state;
     const {plainWord} = task;
@@ -103,13 +103,13 @@ function* TaskBundle (deps) {
     key[index] = newValue;
 
     workspace = updateWorkspace(task, {...workspace, key});
-    return {...state, workspace, isWorkspaceUnsaved: true};
+    return {...state, workspace, isWorkspaceUnsaved: true}; // XXX
   });
 
   /* setPlainWordPosition {cipherIndex, charIndex} updates the key so that the
      plain word appears at a specific position in the deciphered text. */
-  yield defineAction('setPlainWordPosition', 'Workspace.SetPlainWordPosition');
-  yield addReducer('setPlainWordPosition', function (state, action) {
+  bundle.defineAction('setPlainWordPosition', 'Workspace.SetPlainWordPosition');
+  bundle.addReducer('setPlainWordPosition', function (state, action) {
     const {cipherIndex, charIndex} = action;
     let {workspace} = state;
     workspace = updateWorkspace(state.task, {...workspace, wordCharIndex: charIndex, wordCipherIndex: cipherIndex});
