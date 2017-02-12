@@ -1,6 +1,7 @@
 
-const words = require('./words');
 const seedrandom = require('seedrandom');
+
+const words = require('./words');
 
 module.exports = generate;
 

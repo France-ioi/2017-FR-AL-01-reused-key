@@ -1,5 +1,4 @@
 
-import {use, defineAction, defineView, addReducer} from 'epic-linker';
 import runTask from 'alkindi-task-lib';
 
 import Task from './intro';
@@ -133,6 +132,6 @@ function TaskBundle (bundle, deps) {
     // Update the key with the positioned word.
     const keyWithWord = (wordCipherIndex !== null) ? generateKeyWithWord(keyWithHints, plainWord, wordCharIndex, ciphers[wordCipherIndex]) : keyWithHints;
     return {...workspace, keyWithHints, keyWithWord};
-  };
+  }
 
 }

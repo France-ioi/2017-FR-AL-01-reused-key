@@ -233,7 +233,7 @@ export const Workspace = actions => EpicComponent(self => {
         {submitAnswer.status === 'rejected' && (
           submitAnswer.error === 'too soon'
             ? <Alert bsStyle='warning'>{"Trop de réponses en une minute."}</Alert>
-            : <Alert bsStyle='error'>{"Votre réponse n'a pas pu être prise en compte."}</Alert>)}
+            : <Alert bsStyle='danger'>{"Votre réponse n'a pas pu être prise en compte."}</Alert>)}
         <div className="taskInstructions">
           {plainWord &&
             <div>

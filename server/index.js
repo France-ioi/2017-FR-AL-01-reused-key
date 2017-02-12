@@ -24,7 +24,7 @@ function gradeAnswer (full_task, task, answer, callback) {
   const highestPossibleScore = getHighestPossibleScore(hints);
   const score = is_full_solution ? highestPossibleScore : 0;
   callback(null, {
-    feedback, score, is_solution, is_full_solution
+    success: true, feedback, score, is_solution, is_full_solution
   });
 }
 
