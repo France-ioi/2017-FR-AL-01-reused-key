@@ -57,21 +57,22 @@ function TaskBundle (bundle, deps) {
     for (let index = 0; index < ciphers[0].length; index++) {
       key.push(0);
     }
-    const workspace = updateWorkspace(state.task, {key, wordCharIndex: 0, wordCipherIndex: null});
-    return {...state, workspace};
+    const dump = {key, wordCharIndex: 0, wordCipherIndex: null};
+    const workspace = updateWorkspace(state.task, dump);
+    return {...state, dump, workspace};
   }
 
   /* taskUpdated is called to update the global state when the task is updated. */
   function taskUpdated (state) {
-    const workspace = updateWorkspace(state.task, state.workspace);
+    const workspace = updateWorkspace(state.task, state.dump);
+    /* state.dump could be reconciled with new state.task here */
     return {...state, workspace};
   }
 
   /* workspaceLoaded is called to update the global state when a workspace dump is loaded. */
   function workspaceLoaded (state, dump) {
-    const {key, wordCharIndex, wordCipherIndex} = dump;
-    const workspace = updateWorkspace(state.task, {key, wordCharIndex, wordCipherIndex});
-    return {...state, workspace};
+    const workspace = updateWorkspace(state.task, dump);
+    return {...state, dump, workspace};
   }
 
   /* dumpWorkspace is called to build a serializable workspace dump.
@@ -91,18 +92,12 @@ function TaskBundle (bundle, deps) {
   bundle.defineAction('keyChange', 'Workspace.KeyChange');
   bundle.addReducer('keyChange', function keyChangeReducer (state, action) {
     const {index, direction} = action;
-    let {workspace, task} = state;
-    const {plainWord} = task;
-    const {wordCharIndex, wordCipherIndex} = workspace;
-    let {key, keyWithWord} = workspace;
-    const newValue = (key[index] + parseInt(direction) + ALPHABET_SIZE) % ALPHABET_SIZE;
-
-    // Update the key non-destructively.
-    key = workspace.key.slice();
-    key[index] = newValue;
-
-    workspace = updateWorkspace(task, {...workspace, key});
-    return {...state, workspace, isWorkspaceUnsaved: true}; // XXX
+    let {dump, task} = state;
+    const key = dump.key.slice();
+    key[index] = (key[index] + parseInt(direction) + ALPHABET_SIZE) % ALPHABET_SIZE;
+    dump = {...dump, key};
+    const workspace = updateWorkspace(task, dump);
+    return {...state, dump, workspace};
   });
 
   /* setPlainWordPosition {cipherIndex, charIndex} updates the key so that the
@@ -110,28 +105,29 @@ function TaskBundle (bundle, deps) {
   bundle.defineAction('setPlainWordPosition', 'Workspace.SetPlainWordPosition');
   bundle.addReducer('setPlainWordPosition', function (state, action) {
     const {cipherIndex, charIndex} = action;
-    let {workspace} = state;
-    workspace = updateWorkspace(state.task, {...workspace, wordCharIndex: charIndex, wordCipherIndex: cipherIndex});
-    return {...state, workspace, isWorkspaceUnsaved: true};
+    let {dump} = state;
+    dump = {...dump, wordCharIndex: charIndex, wordCipherIndex: cipherIndex};
+    const workspace = updateWorkspace(state.task, dump);
+    return {...state, dump, workspace};
   });
 
-  /* Helper function to update the workspace when the task or workspace has
-    changed.  Enriched versions of the key including hints and the placed
-    plain-text word are built and added to the workspace. */
-  function updateWorkspace (task, workspace) {
-    const {plainWord, ciphers, hints} = task;
-    const {key, wordCharIndex, wordCipherIndex} = workspace;
-    // Update the key with hints.
-    const keyWithHints = key.map(function (value, index) {
-      if (index in hints) {
-        return {value: hints[index], isHint: true};
-      } else {
-        return {value: value, isHint: false};
-      }
-    });
-    // Update the key with the positioned word.
-    const keyWithWord = (wordCipherIndex !== null) ? generateKeyWithWord(keyWithHints, plainWord, wordCharIndex, ciphers[wordCipherIndex]) : keyWithHints;
-    return {...workspace, keyWithHints, keyWithWord};
-  }
+}
 
+/* Helper function to compute the workspace when the task or workspace has
+  changed.  The workspace includes enriched versions of the key including
+  hints and the placed plain-text word. */
+function updateWorkspace (task, dump) {
+  const {plainWord, ciphers, hints} = task;
+  const {key, wordCharIndex, wordCipherIndex} = dump;
+  // Update the key with hints.
+  const keyWithHints = key.map(function (value, index) {
+    if (index in hints) {
+      return {value: hints[index], isHint: true};
+    } else {
+      return {value: value, isHint: false};
+    }
+  });
+  // Update the key with the positioned word.
+  const keyWithWord = (wordCipherIndex !== null) ? generateKeyWithWord(keyWithHints, plainWord, wordCharIndex, ciphers[wordCipherIndex]) : keyWithHints;
+  return {...dump, keyWithHints, keyWithWord};
 }
