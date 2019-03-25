@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import EpicComponent from 'epic-component';
 
 export const Task1 = EpicComponent(self => {
@@ -84,7 +85,7 @@ export const Task2 = EpicComponent(self => {
   }
 });
 
-export default EpicComponent(self => {
+export const Task = EpicComponent(self => {
   self.render = function () {
     const {task} = self.props;
     if (task.version == 1) {
@@ -93,3 +94,14 @@ export default EpicComponent(self => {
     return <Task2 task={task}/>;
   }
 });
+
+function TaskSelector (state) {
+  const {task} = state;
+  return {task};
+}
+
+export default {
+  views: {
+     Task: connect(TaskSelector)(Task)
+  },
+};
