@@ -5,7 +5,7 @@ const words = require('./words');
 
 module.exports = generate;
 
-function generate (params, seed, callback) {
+function generate (params, seed) {
   const rng = seedrandom(seed);
   // TODO choose ciphers and plain word.
   var minLength = words[0][0].length;
@@ -60,7 +60,6 @@ function generate (params, seed, callback) {
   if (version == 1) {
     task.plainWord = plainWord;
   }
-  const full_task = Object.assign({secretKey}, task);
-
-  callback(null, {task, full_task});
-};
+  const full_task = {secretKey};
+  return {publicData:task, privateData: full_task};
+}
