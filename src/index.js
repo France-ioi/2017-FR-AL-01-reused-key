@@ -76,7 +76,7 @@ function getTaskAnswer (state) {
   return {key: state.workspace.keyWithWord.map(c => c.value)};
 }
 
-function taskAnswerLoaded (state, {payload: {key}}) {
+function taskAnswerLoaded (state, {payload: {answer: {key}}}) {
   const {wordCharIndex, wordCipherIndex} = state.workspace;
   const dump = {key, wordCharIndex, wordCipherIndex};
   const workspace = updateWorkspace(state.taskData, dump);
