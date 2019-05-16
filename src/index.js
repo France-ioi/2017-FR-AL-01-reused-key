@@ -21,7 +21,13 @@ const TaskBundle = {
     taskAnswerLoaded: taskAnswerLoaded,
     taskStateLoaded: taskStateLoaded
   },
-  includes: [PlainwordBundle, HintsBundle, KeyTableBundle, CiphersAndPlainsBundle, WorkspaceBundle],
+  includes: [
+    PlainwordBundle,
+    HintsBundle,
+    KeyTableBundle,
+    CiphersAndPlainsBundle,
+    WorkspaceBundle
+  ],
   selectors: {
     getTaskState,
     getTaskAnswer
@@ -66,32 +72,26 @@ function taskInitReducer (state, _action) {
 }
 
 function taskRefreshReducer (state, _action) {
-  ``;
   const workspace = updateWorkspace(state.taskData, state.dump);
   /* state.dump could be reconciled with new state.task here */
   return {...state, workspace};
 }
 
 function getTaskAnswer (state) {
-  return {key: state.workspace.keyWithWord.map(c => c.value)};
+  return state.dump;
 }
 
-function taskAnswerLoaded (state, {payload: {answer: {key}}}) {
-  const {wordCharIndex, wordCipherIndex} = state.workspace;
-  const dump = {key, wordCharIndex, wordCipherIndex};
+function taskAnswerLoaded (state, {payload: {answer: dump}}) {
   const workspace = updateWorkspace(state.taskData, dump);
-  return {...state, workspace};
+  return {...state, dump, workspace};
 }
 
-function getTaskState (state) {
-  const {key, wordCharIndex, wordCipherIndex} = state.workspace;
-  return {key, wordCharIndex, wordCipherIndex};
+function getTaskState (_state) {
+  return {};
 }
 
-function taskStateLoaded (state, {payload: {dump}}) {
-  const workspace = updateWorkspace(state.taskData, dump);
-  /* state.dump could be reconciled with new state.task here */
-  return {...state, workspace};
+function taskStateLoaded (state, {payload: {_dump}}) {
+  return state;
 }
 
 export function run (container, options) {
